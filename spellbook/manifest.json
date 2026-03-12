@@ -1,0 +1,15 @@
+{
+  "name": "SpellBook",
+  "short_name": "SpellBook",
+  "start_url": "/spellbook/",
+  "scope": "/spellbook/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/spellbook/favicon.svg",
+      "sizes": "512x512"
+    }
+  ]
+}
