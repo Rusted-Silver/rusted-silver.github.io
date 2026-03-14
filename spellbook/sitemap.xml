@@ -2,394 +2,394 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://rusted-silver.github.io/spellbook/01.-passive-recon/</loc>
+    <loc>https://ag2s.ca/spellbook/01.-passive-recon/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/02.-active-recon/</loc>
+    <loc>https://ag2s.ca/spellbook/02.-active-recon/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/04.-initial-access/</loc>
+    <loc>https://ag2s.ca/spellbook/04.-initial-access/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/05.-defense-evasion/</loc>
+    <loc>https://ag2s.ca/spellbook/05.-defense-evasion/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/cve/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/cve/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/privileged-groups/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/privileged-groups/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/07.-credential-looting/</loc>
+    <loc>https://ag2s.ca/spellbook/07.-credential-looting/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/08.-discovery/</loc>
+    <loc>https://ag2s.ca/spellbook/08.-discovery/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/09.-pivoting/</loc>
+    <loc>https://ag2s.ca/spellbook/09.-pivoting/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/file-transfer/</loc>
+    <loc>https://ag2s.ca/spellbook/file-transfer/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/misc/</loc>
+    <loc>https://ag2s.ca/spellbook/misc/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/password-crack/</loc>
+    <loc>https://ag2s.ca/spellbook/password-crack/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/01.-passive-recon/bug-bounty-dorks/</loc>
+    <loc>https://ag2s.ca/spellbook/01.-passive-recon/bug-bounty-dorks/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/01.-passive-recon/dns/</loc>
+    <loc>https://ag2s.ca/spellbook/01.-passive-recon/dns/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/01.-passive-recon/public-s3-buckets/</loc>
+    <loc>https://ag2s.ca/spellbook/01.-passive-recon/public-s3-buckets/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/01.-passive-recon/source-code/</loc>
+    <loc>https://ag2s.ca/spellbook/01.-passive-recon/source-code/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/01.-passive-recon/subdomain-enumeration/</loc>
+    <loc>https://ag2s.ca/spellbook/01.-passive-recon/subdomain-enumeration/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/02.-active-recon/port-scan/</loc>
+    <loc>https://ag2s.ca/spellbook/02.-active-recon/port-scan/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/02.-active-recon/web---assets-enumeration/</loc>
+    <loc>https://ag2s.ca/spellbook/02.-active-recon/web---assets-enumeration/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/110995-tcp---pop3/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/110995-tcp---pop3/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/1151-tcp---oracle-db/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/1151-tcp---oracle-db/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/143993-tcp---imap/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/143993-tcp---imap/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/1433-tcp---mssql/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/1433-tcp---mssql/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/1611621016110162-udp---snmp/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/1611621016110162-udp---snmp/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/2049-tcp---nfs/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/2049-tcp---nfs/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/21-tcp---ftp/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/21-tcp---ftp/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/25465587-tcp---smtp/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/25465587-tcp---smtp/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/27017-tcp---mongodb/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/27017-tcp---mongodb/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/3306-tcp---mysql/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/3306-tcp---mysql/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/4222-tcp---nats/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/4222-tcp---nats/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/445-tcp---smb/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/445-tcp---smb/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/623-udp---ipmi/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/623-udp---ipmi/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/basic-http-auth/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/basic-http-auth/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/blind-sqli/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/blind-sqli/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/code-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/code-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/csrf/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/csrf/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/file-upload/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/file-upload/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/graphql/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/graphql/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/idor/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/idor/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/jwt/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/jwt/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/lfi/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/lfi/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/oauth/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/oauth/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/pdf-generation-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/pdf-generation-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/saml/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/saml/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/sql-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/sql-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/ssrf/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/ssrf/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/template-injection-ssti/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/template-injection-ssti/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/websocket/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/websocket/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xss/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xss/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xxe/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/common-vulnerability/xxe/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/http-common-sense/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/http-common-sense/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/https-exfiltration-server/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/https-exfiltration-server/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/cache-poisoning/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/cache-poisoning/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/crlf-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/crlf-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/hosts-header-attacks/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/hosts-header-attacks/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ldap-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ldap-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/mongodb-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/mongodb-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/padding-oracles/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/padding-oracles/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/request-smuggling/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/request-smuggling/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/session-puzzling/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/session-puzzling/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ssi-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/ssi-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/tls-ssl-attacks/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/tls-ssl-attacks/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xpath-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xpath-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xslt-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/rare-vulnerabilities/xslt-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/scripts/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/scripts/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/drupal/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/drupal/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/gitlab/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/gitlab/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/jenkins/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/jenkins/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/joomla/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/joomla/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/nexus-repository-manager/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/nexus-repository-manager/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/prtg/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/prtg/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/splunk/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/splunk/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/tomcat/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/tomcat/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/wordpress/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webapps-specific/wordpress/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/webshells/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/webshells/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/decompilation-tools/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/decompilation-tools/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/asp.net/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/asp.net/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/introduction/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/introduction/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/php/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/php/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/python/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/deserialization/python/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/iis-installation/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/iis-installation/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/prototype-pollution/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/prototype-pollution/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/80443-tcp-http/whitebox/type-juggling/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/80443-tcp-http/whitebox/type-juggling/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/873-tcp---rsync/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/873-tcp---rsync/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/default-credentials/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/default-credentials/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/03.-enumeration/r-services/</loc>
+    <loc>https://ag2s.ca/spellbook/03.-enumeration/r-services/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/04.-initial-access/rdp/</loc>
+    <loc>https://ag2s.ca/spellbook/04.-initial-access/rdp/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/04.-initial-access/smb/</loc>
+    <loc>https://ag2s.ca/spellbook/04.-initial-access/smb/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/04.-initial-access/timeroasting/</loc>
+    <loc>https://ag2s.ca/spellbook/04.-initial-access/timeroasting/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/04.-initial-access/winrm/</loc>
+    <loc>https://ag2s.ca/spellbook/04.-initial-access/winrm/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/05.-defense-evasion/applocker/</loc>
+    <loc>https://ag2s.ca/spellbook/05.-defense-evasion/applocker/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/05.-defense-evasion/defender/</loc>
+    <loc>https://ag2s.ca/spellbook/05.-defense-evasion/defender/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/05.-defense-evasion/firewall/</loc>
+    <loc>https://ag2s.ca/spellbook/05.-defense-evasion/firewall/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/05.-defense-evasion/powershell/</loc>
+    <loc>https://ag2s.ca/spellbook/05.-defense-evasion/powershell/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/05.-defense-evasion/restriced-shell/</loc>
+    <loc>https://ag2s.ca/spellbook/05.-defense-evasion/restriced-shell/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/credential-search/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/credential-search/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/crontab/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/crontab/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/cve/dirty-pipe/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/cve/dirty-pipe/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/cve/logrotate/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/cve/logrotate/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/cve/netfilter/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/cve/netfilter/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/cve/sudo-cve/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/cve/sudo-cve/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/enumeration/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/enumeration/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/kubernetes/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/kubernetes/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/nfs/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/nfs/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/path-injection/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/path-injection/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/privileged-groups/adm/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/privileged-groups/adm/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/privileged-groups/docker/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/privileged-groups/docker/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/privileged-groups/lxc/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/privileged-groups/lxc/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/python-library-hijack/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/python-library-hijack/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/linux/sudo/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/linux/sudo/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/credential-looting/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/credential-looting/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/dpapi/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/dpapi/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/enumeration/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/enumeration/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/printnightmare/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/printnightmare/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/alwaysinstallelevated/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/dnsadmins/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/dnsadmins/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/event-log-readers/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/event-log-readers/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/print-operators/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/print-operators/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/sebackupprivilege/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/sebackupprivilege/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/sedebugprivilege/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/sedebugprivilege/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/seimpersonateprivilege/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/seimpersonateprivilege/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/serestoreprivilege/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/serestoreprivilege/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/server-operators/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/server-operators/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/special-privileges/setakeownershipprivilege/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/special-privileges/setakeownershipprivilege/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/uac-bypass/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/uac-bypass/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/06.-privilege-escalation/windows/user-interactions/</loc>
+    <loc>https://ag2s.ca/spellbook/06.-privilege-escalation/windows/user-interactions/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/07.-credential-looting/dump-lsass/</loc>
+    <loc>https://ag2s.ca/spellbook/07.-credential-looting/dump-lsass/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/07.-credential-looting/dump-sam/</loc>
+    <loc>https://ag2s.ca/spellbook/07.-credential-looting/dump-sam/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/07.-credential-looting/kerberos-keytab---linux/</loc>
+    <loc>https://ag2s.ca/spellbook/07.-credential-looting/kerberos-keytab---linux/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/07.-credential-looting/kerberos-kirbi---windows/</loc>
+    <loc>https://ag2s.ca/spellbook/07.-credential-looting/kerberos-kirbi---windows/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/07.-credential-looting/laps/</loc>
+    <loc>https://ag2s.ca/spellbook/07.-credential-looting/laps/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/07.-credential-looting/virtual-disks/</loc>
+    <loc>https://ag2s.ca/spellbook/07.-credential-looting/virtual-disks/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/08.-discovery/network-hosts/</loc>
+    <loc>https://ag2s.ca/spellbook/08.-discovery/network-hosts/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/08.-discovery/password-policy/</loc>
+    <loc>https://ag2s.ca/spellbook/08.-discovery/password-policy/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/08.-discovery/ping-sweep/</loc>
+    <loc>https://ag2s.ca/spellbook/08.-discovery/ping-sweep/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/08.-discovery/user-enumeration/</loc>
+    <loc>https://ag2s.ca/spellbook/08.-discovery/user-enumeration/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/09.-pivoting/chisel/</loc>
+    <loc>https://ag2s.ca/spellbook/09.-pivoting/chisel/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/09.-pivoting/dnscat2/</loc>
+    <loc>https://ag2s.ca/spellbook/09.-pivoting/dnscat2/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/09.-pivoting/ligolo-ng/</loc>
+    <loc>https://ag2s.ca/spellbook/09.-pivoting/ligolo-ng/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/09.-pivoting/metasploit/</loc>
+    <loc>https://ag2s.ca/spellbook/09.-pivoting/metasploit/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/09.-pivoting/port-forward/</loc>
+    <loc>https://ag2s.ca/spellbook/09.-pivoting/port-forward/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/09.-pivoting/ssh/</loc>
+    <loc>https://ag2s.ca/spellbook/09.-pivoting/ssh/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/adcs-attacks/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/adcs-attacks/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/bloodhound/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/bloodhound/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/dacl-abuse/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/dacl-abuse/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/dcsync/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/dcsync/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/enumeration/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/enumeration/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/impacket-exec/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/impacket-exec/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/kerberoasting/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/kerberoasting/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/kerberos/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/kerberos/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/nopac/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/nopac/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/ntlm-relay/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/ntlm-relay/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/password-spray---from-linux/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/password-spray---from-linux/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/password-spray---from-windows/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/password-spray---from-windows/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/rdp-session-hijacking/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/rdp-session-hijacking/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/relay-potato/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/relay-potato/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/10.-lateral-movement/runas/</loc>
+    <loc>https://ag2s.ca/spellbook/10.-lateral-movement/runas/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/</loc>
+    <loc>https://ag2s.ca/spellbook/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/file-transfer/edge-cases/</loc>
+    <loc>https://ag2s.ca/spellbook/file-transfer/edge-cases/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/file-transfer/encrypted-transfer/</loc>
+    <loc>https://ag2s.ca/spellbook/file-transfer/encrypted-transfer/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/file-transfer/linux-target/</loc>
+    <loc>https://ag2s.ca/spellbook/file-transfer/linux-target/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/file-transfer/nginx/</loc>
+    <loc>https://ag2s.ca/spellbook/file-transfer/nginx/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/file-transfer/rdp/</loc>
+    <loc>https://ag2s.ca/spellbook/file-transfer/rdp/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/file-transfer/windows-target/</loc>
+    <loc>https://ag2s.ca/spellbook/file-transfer/windows-target/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/file-transfer/winrm/</loc>
+    <loc>https://ag2s.ca/spellbook/file-transfer/winrm/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/misc/interactive-shell/</loc>
+    <loc>https://ag2s.ca/spellbook/misc/interactive-shell/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/misc/python-eval-bypass/</loc>
+    <loc>https://ag2s.ca/spellbook/misc/python-eval-bypass/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/misc/tips-and-setup/</loc>
+    <loc>https://ag2s.ca/spellbook/misc/tips-and-setup/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/password-crack/hashcat/</loc>
+    <loc>https://ag2s.ca/spellbook/password-crack/hashcat/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/password-crack/hashid/</loc>
+    <loc>https://ag2s.ca/spellbook/password-crack/hashid/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/password-crack/john/</loc>
+    <loc>https://ag2s.ca/spellbook/password-crack/john/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/cewl/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/cewl/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/metasploit/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/metasploit/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/nodejs/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/nodejs/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/openssl/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/openssl/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/powershell/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/powershell/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/sed/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/sed/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/shell-fu/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/shell-fu/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/sql-syntax/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/sql-syntax/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/syntax-cheatsheets/sqlmap/</loc>
+    <loc>https://ag2s.ca/spellbook/syntax-cheatsheets/sqlmap/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/categories/</loc>
+    <loc>https://ag2s.ca/spellbook/categories/</loc>
   </url><url>
-    <loc>https://rusted-silver.github.io/spellbook/tags/</loc>
+    <loc>https://ag2s.ca/spellbook/tags/</loc>
   </url>
 </urlset>
